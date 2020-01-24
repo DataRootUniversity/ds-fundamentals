@@ -928,7 +928,7 @@ if __name__ == '__main__':
 Now you can run the script with the command `python interactor.py` (debug in case of exceptions). 
 
 <div align="center">
-    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/Snake_Project/figures/snake.gif?raw=true">
+    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/snake-project/figures/snake.gif?raw=true">
 </div>
 
 That what you'll see if everything is right. **The terminal window must be active while playing!**
