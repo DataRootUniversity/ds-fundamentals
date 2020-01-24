@@ -8,7 +8,7 @@ In this guide, we will go through the process and develop web API, data preproce
 # Table Of Contents
 -  [Intro](#intro)
 -  [Project Structure](#project-structure)
--  [Feature Engineering & Data Preprocessing](#feature-engineering-&-data-preprocessing)
+-  [Feature Engineering & Data Preprocessing](#feature-engineering--data-preprocessing)
     -  [Feature Engineering](#feature-engineering)
     -   [Data Preprocessing](#data-preprocessing)
 -  [Model Selection, Training and Saving](#model-selection-training-and-saving)
