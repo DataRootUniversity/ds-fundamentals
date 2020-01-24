@@ -831,7 +831,8 @@ Then you can use some `GUI` for sending requests like `[Postman](https://www.get
 Here are examples of **correct** requests with `200` response status code:
 
 <div align="center">
-    <img align="center" src="hhttps://github.com/DataRootUniversity/ds-fundamentals/tree/master/RESTul_APIs_Project/figures/add-actor.png?raw=true">
+    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/tree/master/RESTul_APIs_Project/figures/add-actor.png?raw=true">
+</div>
     <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/tree/master/RESTul_APIs_Project/figures/add-movie.png?raw=true">
     <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/tree/master/RESTul_APIs_Project/figures/actors.png?raw=true">
     <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/tree/master/RESTul_APIs_Project/figures/del-actor.png?raw=true">
