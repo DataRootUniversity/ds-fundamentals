@@ -212,7 +212,7 @@ full_data = [train, test]
 train.head()
 ```
 <div align="center">
-    <img align="center" width="706" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/figures/train-head.png?raw=true">
+    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/Final_Project/figures/train-head.png?raw=true">
 </div>
 
 The **target value** is the **`Survived`** column and other columns are the **features,** so our task is to **predict** surviving of the passenger depending on his **features**. ****To perform correct **Data Preprocessing,** we need to consider all the **features** and find out their **implications** on the dataset.
@@ -224,7 +224,7 @@ The **target value** is the **`Survived`** column and other columns are the **fe
 train[['Pclass', 'Survived']].groupby(['Pclass'], as_index = False).mean()
 ```
 <div align="center">
-    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/figures/pclass.png?raw=true">
+    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/Final_Project/figures/pclass.png?raw=true">
 </div>
 
 We can see, that passengers, who traveled first-class had more chances to survive.
@@ -234,7 +234,7 @@ We can see, that passengers, who traveled first-class had more chances to surviv
 train[["Gender", "Survived"]].groupby(['Gender'], as_index = False).mean()
 ```
 <div align="center">
-    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/figures/gender.png?raw=true">
+    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/Final_Project/figures/gender.png?raw=true">
 </div>
 
 Women had many more chances to survive on Titanic (seems like James Cameron knew about the statistics ;) )
@@ -245,7 +245,7 @@ train['FamilySize'] = train['SibSp'] + train['Parch'] + 1
 train[['FamilySize', 'Survived']].groupby(['FamilySize'], as_index = False).mean()
 ```
 <div align="center">
-    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/figures/sibsp.png?raw=true">
+    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/Final_Project/figures/sibsp.png?raw=true">
 </div>
 
 It seems to have a good effect on our prediction, but let's go further and **categorize** people to check whether they were alone on the ship or not.
@@ -256,7 +256,7 @@ train.loc[dataset['FamilySize'] == 1, 'IsAlone'] = 1
 train[['IsAlone', 'Survived']].groupby(['IsAlone'], as_index=False).mean()
 ```
 <div align="center">
-    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/figures/isalone.png?raw=true">
+    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/Final_Project/figures/isalone.png?raw=true">
 </div>
 
 Good! The impact is considerable.
@@ -267,7 +267,7 @@ train['Embarked'] = train['Embarked'].fillna(train['Embarked'].mode()[0])
 train[['Embarked', 'Survived']].groupby(['Embarked'], as_index = False).mean()
 ```
 <div align="center">
-    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/figures/embarked.png?raw=true">
+    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/Final_Project/figures/embarked.png?raw=true">
 </div>
 
 **`Fare:`** Fare also has some missing values and we will replace them with the **median**. Then, we **categorize** it into 4 ranges.
@@ -277,7 +277,7 @@ train['CategoricalFare'] = pd.qcut(train['Fare'], 4)
 train[['CategoricalFare', 'Survived']].groupby(['CategoricalFare'], as_index=False).mean()
 ```
 <div align="center">
-    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/figures/fare.png?raw=true">
+    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/Final_Project/figures/fare.png?raw=true">
 </div>
 
 As we can see, passengers with the cheapest tickets had almost no chance to survive and the probability to survive grew with the price of the ticket.
@@ -297,7 +297,7 @@ train['CategoricalAge'] = pd.cut(train['Age'], 5)
 train[['CategoricalAge', 'Survived']].groupby(['CategoricalAge'], as_index=False).mean()
 ```
 <div align="center">
-    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/figures/age.png?raw=true">
+    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/Final_Project/figures/age.png?raw=true">
 </div>
 
 We can see that children had the highest chance to survive.
@@ -316,7 +316,7 @@ train['Title'] = train['Name'].apply(get_title)
 pd.crosstab(train['Title'], train['Sex'])
 ```
 <div align="center">
-    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/figures/raw-title.png?raw=true">
+    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/Final_Project/figures/raw-title.png?raw=true">
 </div>
 
 Now that we have titles, let's categorize them and check the title impact on survival rate.
@@ -331,7 +331,7 @@ train['Title'] = train['Title'].replace('Mme', 'Mrs')
 train[['Title', 'Survived']].groupby(['Title'], as_index=False).mean()
 ```
 <div align="center">
-    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/figures/title-cat.png?raw=true">
+    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/Final_Project/figures/title-cat.png?raw=true">
 </div>
 
 As we can judge, young ladies had more chances to survive than other people.
@@ -758,7 +758,7 @@ class DataLoader(object):
 That's how the data looks like after preprocessing:
 
 <div align="center">
-    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/figures/processe-data.png?raw=true">
+    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/Final_Project/figures/processe-data.png?raw=true">
 </div>
 
 Let's consider the parts which are needed to check your project. 
@@ -1095,7 +1095,7 @@ sns.barplot(x = 'Accuracy', y = 'Classifier', data = log, color = "b")
 Here are the result of each model:
 
 <div align="center">
-    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/figures/estimators.png?raw=true">
+    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/Final_Project/figures/estimators.png?raw=true">
 </div>
 
 We can see that `SVC` shows the best results: accuracy score is `0.82` on the validation set. 
