@@ -111,7 +111,7 @@ There are two entities: **Actor** and **Movie**. One actor can star in multiple 
 You can see all properties in the schema below:
 
 <div align="center">
-    <img align="center" width="706" src="https://github.com/DataRootUniversity/ds-fundamentals/tree/master/RESTul_APIs_Project/figures/db-diagram.png?raw=true">
+    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/RESTul_APIs_Project/figures/db-diagram.png?raw=true">
 </div>
 
 
@@ -263,7 +263,7 @@ with app.app_context():
 Here is an example of the output:
 
 <div align="center">
-    <img align="center" width="706" src="https://github.com/DataRootUniversity/ds-fundamentals/tree/master/RESTul_APIs_Project/figures/add-actor-raw.png?raw=true">
+    <img align="center" width="706" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/RESTul_APIs_Project/figures/add-actor-raw.png?raw=true">
 </div>
 
 Also, we recommend that you look through the **documentation** and **test other operations** (delete record, add relations, remove relations, etc) in the same way.
@@ -418,7 +418,7 @@ with app.app_context():
 Here is an example of the output:
 
 <div align="center">
-    <img align="center" width="706" src="https://github.com/DataRootUniversity/ds-fundamentals/tree/master/RESTul_APIs_Project/figures/add-actor-method.png?raw=true">
+    <img align="center" width="706" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/RESTul_APIs_Project/figures/add-actor-method.png?raw=true">
 </div>
 
 **Now you should test every operation.** Here is an example of methods usage:
@@ -831,13 +831,12 @@ Then you can use some `GUI` for sending requests like `[Postman](https://www.get
 Here are examples of **correct** requests with `200` response status code:
 
 <div align="center">
-    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/tree/master/RESTul_APIs_Project/figures/add-actor.png?raw=true">
-</div>
-    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/tree/master/RESTul_APIs_Project/figures/add-movie.png?raw=true">
-    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/tree/master/RESTul_APIs_Project/figures/actors.png?raw=true">
-    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/tree/master/RESTul_APIs_Project/figures/del-actor.png?raw=true">
-    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/tree/master/RESTul_APIs_Project/figures/filmography.png?raw=true">
-    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/tree/master/RESTul_APIs_Project/figures/del-filmography.png?raw=true">
+    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/RESTul_APIs_Project/figures/add-actor.png?raw=true">
+    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/RESTul_APIs_Project/figures/add-movie.png?raw=true">
+    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/RESTul_APIs_Project/figures/actors.png?raw=true">
+    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/RESTul_APIs_Project/figures/del-actor.png?raw=true">
+    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/RESTul_APIs_Project/figures/filmography.png?raw=true">
+    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/RESTul_APIs_Project/figures/del-filmography.png?raw=true">
 </div>
 
 
