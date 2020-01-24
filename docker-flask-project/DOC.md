@@ -111,7 +111,7 @@ There are two entities: **Actor** and **Movie**. One actor can star in multiple 
 You can see all properties in the schema below:
 
 <div align="center">
-    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/RESTul_APIs_Project/figures/db-diagram.png?raw=true">
+    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/docker-flask-project/figures/db-diagram.png?raw=true">
 </div>
 
 
@@ -128,7 +128,7 @@ MOVIE_FIELDS = ['id', 'name', 'year', 'genre']
 # date of birth format
 DATE_FORMAT = '%d.%m.%Y'
 ```
-We'll use `[SQLAlchemy](https://www.sqlalchemy.org/)` toolkit to manipulate all stuff related to the DataBase (defining models, initialization of the DB, etc).
+We'll use [`SQLAlchemy`](https://www.sqlalchemy.org/) toolkit to manipulate all stuff related to the DataBase (defining models, initialization of the DB, etc).
 
 Let's define an **association** table, keeping in mind that our **entities** have **relations** between each other.
 
@@ -418,7 +418,7 @@ with app.app_context():
 Here is an example of the output:
 
 <div align="center">
-    <img align="center" width="706" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/RESTul_APIs_Project/figures/add-actor-method.png?raw=true">
+    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/docker-flask-project/figures/add-actor-method.png?raw=true">
 </div>
 
 **Now you should test every operation.** Here is an example of methods usage:
@@ -826,17 +826,17 @@ if __name__ == "__main__":
 ## **Test your app**
 
 In order to test the application, you need to run `run.py` and **debug** in case of errors.
-Then you can use some `GUI` for sending requests like `[Postman](https://www.getpostman.com/downloads/)` or `curl` requests in Python.
+Then you can use some `GUI` for sending requests like [`Postman`](https://www.getpostman.com/downloads/) or `curl` requests in Python.
 
 Here are examples of **correct** requests with `200` response status code:
 
 <div align="center">
-    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/RESTul_APIs_Project/figures/add-actor.png?raw=true">
-    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/RESTul_APIs_Project/figures/add-movie.png?raw=true">
-    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/RESTul_APIs_Project/figures/actors.png?raw=true">
-    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/RESTul_APIs_Project/figures/del-actor.png?raw=true">
-    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/RESTul_APIs_Project/figures/filmography.png?raw=true">
-    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/RESTul_APIs_Project/figures/del-filmography.png?raw=true">
+    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/docker-flask-project/figures/add-actor.png?raw=true">
+    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/docker-flask-project/figures/add-movie.png?raw=true">
+    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/docker-flask-project/figures/actors.png?raw=true">
+    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/docker-flask-project/figures/del-actor.png?raw=true">
+    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/docker-flask-project/figures/filmography.png?raw=true">
+    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/docker-flask-project/figures/del-filmography.png?raw=true">
 </div>
 
 
