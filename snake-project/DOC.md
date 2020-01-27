@@ -43,8 +43,10 @@ snake
     │   │   ├── snake.py     - snake properties.
     │   │   └── world.py     - grid world properties.
     │   │
-    │   └── utils            - additional parts of env
-    │       └── renderer.py  - observation rendering tool. 
+    │   ├── utils            - additional parts of env
+    │   │   └── renderer.py  - observation rendering tool. 
+    │   │
+    │   └── snake_env.py     - compilation of main parts of environment.
     │
     ├── settings             - here you can store different constant values, connection parameters, etc.
     │   └── constants.py     - multiple constants storage for their convenient usage.
@@ -941,8 +943,10 @@ Archive.zip
     │   │   ├── snake.py     
     │   │   └── world.py    
     │   │
-    │   └── utils      
-    │       └── renderer.py 
+    │   ├── utils            
+    │   │   └── renderer.py  
+    │   │
+    │   └── snake_env.py  
     │
     ├── settings   
     │   └── constants.py
