@@ -639,7 +639,7 @@ class World(object):
         """
         # define reward variable
         reward = 0
-        # food needed flaf
+        # food needed flag
         new_food_needed = False
         # check if snake is alive
         if self.snake.alive:
