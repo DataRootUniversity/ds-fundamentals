@@ -883,6 +883,7 @@ Since our gameplay is very simple, we can define one key for each action:
 
 By the way, you can define any other keys suitable for you.
 Here is the code of the interactor `interactor.py`:
+
 (for UNIX based OS) 
 ```python
 import sys, tty, select
