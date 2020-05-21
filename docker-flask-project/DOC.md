@@ -140,7 +140,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 ```
-Now we need to define the relations between entities. Look through the [documentation](https://docs.sqlalchemy.org/en/13/orm/basic_relationships.html') and then move to the `models/relations.py` and implement an **association table** following the instructions below:
+Now we need to define the relations between entities. Look through the [documentation](https://docs.sqlalchemy.org/en/13/orm/basic_relationships.html) and then move to the `models/relations.py` and implement an **association table** following the instructions below:
 ```python
 from core import db
 
