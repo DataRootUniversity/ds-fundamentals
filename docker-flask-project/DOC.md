@@ -140,7 +140,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 ```
-Now we need to define the relations between entities. Look through the [documentation](https://www.notion.so/datarootlabs/'%3Chttps://docs.sqlalchemy.org/en/13/orm/basic_relationships.html%3E') and then move to the `models/relations.py` and implement an **association table** following the instructions below:
+Now we need to define the relations between entities. Look through the [documentation](https://docs.sqlalchemy.org/en/13/orm/basic_relationships.html') and then move to the `models/relations.py` and implement an **association table** following the instructions below:
 ```python
 from core import db
 
@@ -151,7 +151,7 @@ from core import db
 association =
 ```
 
-Let's try to create our first model `Actor`. Check out [documentation](https://www.notion.so/datarootlabs/'%3Chttps://flask-sqlalchemy.palletsprojects.com/en/2.x/models/%3E'), then open `models/actor.py` and complete the model's class with defining entities properties:
+Let's try to create our first model `Actor`. Check out [documentation](https://flask-sqlalchemy.palletsprojects.com/en/2.x/models/), then open `models/actor.py` and complete the model's class with defining entities properties:
 ```python
 from datetime import datetime as dt
 
@@ -263,7 +263,7 @@ with app.app_context():
 Here is an example of the output:
 
 <div align="center">
-    <img align="center" width="706" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/RESTul_APIs_Project/figures/add-actor-raw.png?raw=true">
+    <img align="center" width="706" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/docker-flask-project/figures/add-actor-raw.png?raw=true">
 </div>
 
 Also, we recommend that you look through the **documentation** and **test other operations** (delete record, add relations, remove relations, etc) in the same way.
