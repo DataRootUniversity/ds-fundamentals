@@ -17,7 +17,7 @@ In this guide, we will go through the process and develop web API, data preproce
 
 ## Intro
 
-This tutorial is not like our previous guides, because here you'll see the whole development process from the **feature engineering** stage to the **saved model usage** with full code. You should read it carefully in order to complete the **Final Project** activity without any misunderstandings. 
+This tutorial is not like our previous guides, because here you'll see the whole development process from the **feature engineering** stage to the **saved model usage** with full code. **The guide will show you all the phases of the Final Project activity to help you with implementation of your own project for solving the chosen task.** You should read it carefully in order to complete the **Final Project** activity without any misunderstandings. 
 
 We will consider such stages as:
 
@@ -29,7 +29,8 @@ By working with the data from [Kaggle's Titanic competition](https://www.kaggle.
 
 **After reading this tutorial your tasks will be:**
 
-- finding a dataset
+- setting **any task you like** to solve it using ML (classification, regression, etc.)(you can come up with it by yourself or choose a task from Kaggle. **Don't try to submit the code from this guide - it's just example of the project, and it won't pass the tests**) 
+- finding a dataset, which fits your task
 - implementing a data preprocessing module
 - choosing, training, and saving the model
 - writing simple API to use your trained estimator
@@ -40,7 +41,7 @@ By working with the data from [Kaggle's Titanic competition](https://www.kaggle.
 app
     ├── data                        - contains train and test data
     │   ├── train.csv               - train set 
-    │   └── test.csv                - test set
+    │   └── test.csv                - validation set (must contain target values)
     ├── models                      - this folder contains a trained estimator.
     │   └── <name>.pickle           - trained estimator. 
     │
@@ -1317,4 +1318,5 @@ COPY . .
 CMD ["python", "./app.py"]
 ```
 Upload the image to the [Docker Hub](https://hub.docker.com/), submit your project, and that's it.
-**Congrats, you have completed the DRU DS Fundamentals program!**
+
+Now it's time to come up with a task and data, and implement all the steps from the tutorial for your own project. Good luck, have fun! 
