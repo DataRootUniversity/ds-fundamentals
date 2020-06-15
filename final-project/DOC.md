@@ -36,12 +36,16 @@ By working with the data from [Kaggle's Titanic competition](https://www.kaggle.
 - writing simple API to use your trained estimator
 - dockerizing your app
 
+> **Important note:**
+Size of your train set must be from **600** to **20000** examples, size of the validation set must be between **100** and **10000**.
+
+
 ## Project Structure
 ```
 app
-    ├── data                        - contains train and test data
+    ├── data                        - contains train and validation data
     │   ├── train.csv               - train set 
-    │   └── test.csv                - validation set (must contain target values)
+    │   └── val.csv                 - validation set (must contain target values)
     ├── models                      - this folder contains a trained estimator.
     │   └── <name>.pickle           - trained estimator. 
     │
@@ -195,7 +199,7 @@ import os
 
 DATA_FOLDER = 'data'
 TRAIN_CSV = os.path.join(DATA_FOLDER, 'train.csv')
-TEST_CSV = os.path.join(DATA_FOLDER, 'test.csv')
+VAL_CSV = os.path.join(DATA_FOLDER, 'val.csv')
 ```
 
 Firstly, we need to take a look at the data, so let's load the dataset:
@@ -207,8 +211,8 @@ import re as re
 from settings import 
 
 train = pd.read_csv(TRAIN_CSV, header = 0, dtype={'Age': np.float64})
-test  = pd.read_csv(TEST_CSV , header = 0, dtype={'Age': np.float64})
-full_data = [train, test]
+val  = pd.read_csv(VAL_CSV , header = 0, dtype={'Age': np.float64})
+full_data = [train, val]
 
 train.head()
 ```
@@ -963,6 +967,13 @@ First is the final look of the `settings/specifications.json`:
     ]
 }
 ```
+> **Important note:**
+Use **Mean Absolute Percentage Error** for regression task. Put `mean_absolute_percentage_error` into the metrics specification. Implementation:
+```python
+def mean_absolute_percentage_error(y_true, y_pred): 
+    y_true, y_pred = np.array(y_true), np.array(y_pred)
+    return np.mean(np.abs((y_true - y_pred) / y_true)) * 100
+```
 
 Second is a `Dataset` class that contains methods to give us some information about your dataset and allows us to generate data samples.
 
@@ -1102,14 +1113,6 @@ Here are the result of each model:
 
 We can see that `SVC` shows the best results: accuracy score is `0.82` on the validation set.
 
-> **Important note:**
-Use **Mean Absolute Percentage Error** for regression task. Put `mean_absolute_percentage_error` into the metrics specification. Implementation:
-```python
-def mean_absolute_percentage_error(y_true, y_pred): 
-    y_true, y_pred = np.array(y_true), np.array(y_pred)
-    return np.mean(np.abs((y_true - y_pred) / y_true)) * 100
-```
-
 Now we need to train the estimator on the whole training set and save the model:
 ```python
 import pickle
@@ -1149,7 +1152,7 @@ import pandas as pd
 from sklearn.svm import SVC
 
 from utils.dataloader import DataLoader 
-from settings. constants import TEST_CSV
+from settings. constants import VAL_CSV
 
 
 with open('settings/specifications.json') as f:
@@ -1158,13 +1161,13 @@ with open('settings/specifications.json') as f:
 x_columns = specifications['description']['X']
 y_column = specifications['description']['y']
 
-raw_test = pd.read_csv(TEST_CSV)
-x_raw = raw_test[x_columns]
+raw_val = pd.read_csv(VAL_CSV)
+x_raw = raw_val[x_columns]
 
 loader = DataLoader()
 loader.fit(x_raw)
 X = loader.load_data()
-y = raw_test.Survived
+y = raw_val.Survived
 
 loaded_model = pickle.load(open('models/SVC.pickle', 'rb'))
 loaded_model.score(X, y)
@@ -1214,7 +1217,7 @@ Now all is left is an API.
 
 ## API
 
-Our API will have only one route `/predict`, which will receive some test data and return prediction. The body of the request contains `data` field which stores json with the data. Here is the full code:
+Our API will have only one route `/predict`, which will receive some validation data and return prediction. The body of the request contains `data` field which stores json with the data. Here is the full code:
 ```python
 from utils import Predictor
 from utils import DataLoader
@@ -1260,7 +1263,7 @@ from sklearn.svm import SVC
 from sklearn.metrics import accuracy_score
 
 from utils import DataLoader, Estimator 
-from settings. constants import TRAIN_CSV, TEST_CSV
+from settings. constants import TRAIN_CSV, VAL_CSV
 
 with open('settings/specifications.json') as f:
     specifications = json.load(f)
@@ -1269,22 +1272,22 @@ info = specifications['description']
 x_columns, y_column, metrics = info['X'], info['y'], info['metrics']
 
 train_set = pd.read_csv(TRAIN_CSV, header=0)
-test_set = pd.read_csv(TEST_CSV, header=0)
+val_set = pd.read_csv(VAL_CSV, header=0)
 
 train_x, train_y = train_set[x_columns], train_set[y_column]
-test_x, test_y = test_set[x_columns], test_set[y_column]
+val_x, val_y = val_set[x_columns], val_set[y_column]
 
 loader = DataLoader()
-loader.fit(test_x)
-test_processed = loader.load_data()
-print('data: ', test_processed[:10])
+loader.fit(val_x)
+val_processed = loader.load_data()
+print('data: ', val_processed[:10])
 
-req_data = {'data': json.dumps(test_x.to_dict())}
+req_data = {'data': json.dumps(val_x.to_dict())}
 response = requests.get('http://0.0.0.0:8000/predict', data=req_data)
 api_predict = response.json()['prediction']
 print('predict: ', api_predict[:10])
 
-api_score = eval(metrics)(test_y, api_predict)
+api_score = eval(metrics)(val_y, api_predict)
 print('accuracy: ', api_score)
 ```
 Here is the output:
