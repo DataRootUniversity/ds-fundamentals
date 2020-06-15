@@ -94,7 +94,7 @@ For** automatic project checking, we have set some limitations to the data prepr
                                       // `mean` - fill Nans with column mean
                                         // `mode` - fill Nans with column mode
                                         // `median` - fill Nans with column median
-                                        // `random` - fill Nans with random values in range (avg - std, avg + std)
+                                        // `random` - fill Nans with random values in range (avg - std, avg + std) for numeric column type, random column values for string column type
     ],
         // split column values on bins inplace or by adding new column with name 'in_column_categorical'
     "bins":[
@@ -109,12 +109,12 @@ For** automatic project checking, we have set some limitations to the data prepr
         // replace values in column depending on values in other column
     "replace":[
         "in_column", // input column name (dependent column)(type: str) 
-        "old_value", // value to replace (type: int/float)
-        "new_value", // new value (type: int/float)
+        "old_value", // value to replace (type: int/float/str)
+        "new_value", // new value (type: int/float/str)
         "condition_column", // condition column (independent column)(type: str) 
         "condition", // condition (type: str): `equal`, `greater`, `lower`, `gte`, `lte`
         "condition_value", // condition value (type: int/float)
-        "default", // default value (type: int/float)
+        "default", // default value (type: int/float/str)
         "inplace" // (type: bool) if inplace: replace `in_column` values, else: create `in_column` with `default` value   
     ],
         // combine columns in different ways
@@ -1030,6 +1030,7 @@ class Dataset:
 ## Model Selection, Training and Saving
 
 To solve our task, we need to choose an estimator that will classify the data. Let's take a bunch of estimators, train them and compare the results (here we used **accuracy score**):
+
 ```python
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -1099,7 +1100,15 @@ Here are the result of each model:
     <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/final-project/figures/estimators.png?raw=true">
 </div>
 
-We can see that `SVC` shows the best results: accuracy score is `0.82` on the validation set. 
+We can see that `SVC` shows the best results: accuracy score is `0.82` on the validation set.
+
+> **Important note:**
+Use **Mean Absolute Percentage Error** for regression task. Put `mean_absolute_percentage_error` into the metrics specification. Implementation:
+```python
+def mean_absolute_percentage_error(y_true, y_pred): 
+    y_true, y_pred = np.array(y_true), np.array(y_pred)
+    return np.mean(np.abs((y_true - y_pred) / y_true)) * 100
+```
 
 Now we need to train the estimator on the whole training set and save the model:
 ```python
