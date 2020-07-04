@@ -83,55 +83,56 @@ For** automatic project checking, we have set some limitations to the data prepr
 {
     // handling outliers in different ways
     "handle_outliers":[
-        "in_column", // input column name(type: str) 
-        "mode",  // mode of handling outliers: `drop`, `cap` (type: str)
-        "method", // methods of handling outliers: `std`, `percentile` (type: str)
-        "factor", // factor value in case using `std`
-        "upper_quantile", // in case using `percentile` (float)
-        "lower_quantile"  // in case using `percentile` (float)
+        "in_columns", // input column name(type: list[str]) 
+        "modes",  // mode of handling outliers: `drop`, `cap` (type: list[str])
+        "methods", // methods of handling outliers: `std`, `percentile` (type: list[str])
+        "factors", // factor value in case using `std` (type: list[float])
+        "upper_quantiles", // in case using `percentile` (type: list[float])
+        "lower_quantiles"  // in case using `percentile` (type: list[float])
     ],
         // filling Nans in different ways
     "fill_nans":[
-        "in_column", // input column name (type: str) 
-        "method" // method of filling Nans (type: str): 
+        "in_columns", // input column names (type: list[str]) 
+        "methods" // methods of filling Nans (type: list[str]): 
                                         // `zero` - fill Nans with 0
-                                      // `mean` - fill Nans with column mean
+                                        // `mean` - fill Nans with column mean
                                         // `mode` - fill Nans with column mode
                                         // `median` - fill Nans with column median
+                                        // `custom` - fill Nans with custom value
                                         // `random` - fill Nans with random values in range (avg - std, avg + std) for numeric column type, random column values for string column type
     ],
         // split column values on bins inplace or by adding new column with name 'in_column_categorical'
     "bins":[
-        "in_column", // input column name (type: str) 
-        "bins_num", // number of bins (type: int)
-        "method", // method of splitting (type: str): `cut`, `qcut`, `condition` 
-        "conditions", // conditions for case of using `condition` method (type: str)
-        "choices", // choices for case of using `condition` method (type: str)
-        "default", // default value (type: any type)
-        "inplace" // change `in_column` of add new column `in_column_categorical` (type: bool)
+        "in_columns", // input column name (type: list[str]) 
+        "bins_nums", // number of bins (type: list(int))
+        "methods", // method of splitting (type: list[str]): `cut`, `qcut`, `condition` 
+        "conditions", // conditions for case of using `condition` method (type: list[str])
+        "choices", // choices for case of using `condition` method (type: list[str])
+        "defaults", // default value (type: list[any type])
+        "inplaces" // change `in_columns[i]` of add new column `in_column[i]_categorical` (type: list(bool))
     ],
         // replace values in column depending on values in other column
     "replace":[
-        "in_column", // input column name (dependent column)(type: str) 
-        "old_value", // value to replace (type: int/float/str)
-        "new_value", // new value (type: int/float/str)
-        "condition_column", // condition column (independent column)(type: str) 
-        "condition", // condition (type: str): `equal`, `greater`, `lower`, `gte`, `lte`
-        "condition_value", // condition value (type: int/float)
-        "default", // default value (type: int/float/str)
-        "inplace" // (type: bool) if inplace: replace `in_column` values, else: create `in_column` with `default` value   
+        "in_columns", // input column name (dependent column)(type: list[str]) 
+        "old_values", // value to replace (type: list[list/int/float/str])
+        "new_values", // new value (type: list[int/float/str])
+        "condition_columns", // condition column (independent column)(type: list[str]) 
+        "conditions", // condition (type: list[str]): `equal`, `greater`, `lower`, `gte`, `lte`
+        "condition_values", // condition value (type: list[int/float])
+        "defaults", // default value (type: list[int/float/str])
+        "inplaces" // (type: list[bool]) if inplace: replace `in_column` values, else: create `in_column` with `default` value   
     ],
         // combine columns in different ways
     "columns_combination":[
-        "in_columns", // input columns names (type: list, len = 2)
-        "out_column", // output column name (type: str) 
-        "method", // combination method (type: str): 
+        "in_columns_list", // input columns names (type: list[list, len = 2])
+        "out_columns", // output column name (type: list[str]) 
+        "methods", // combination method (type: list[str]): 
                                         // `addition` - add columns values
                                         // `subtraction` - substract columns values (`in_columns[0]` - `in_columns[1]`)
                                         // `multiplication` - multiply columns values
                                         // `division` - divide `in_columns[0]` values on `in_columns[1]` values
-        "coefficients", // columns values coefficients (type: list[int/float], len = 2))
-        "bias" // bias value (type: int/float)
+        "coefficients_list", // columns values coefficients (type: list[list[int/float], len = 2]))
+        "biases" // bias value (type: list[int/float])
     ],
         // dates processing: transforms date column into `column_name_year`, 
                                                       // `column_name_month`, 
@@ -141,25 +142,25 @@ For** automatic project checking, we have set some limitations to the data prepr
                                                        // `column_name_doy_sin`,
                                                        // `column_name_doy_cos`
     "process_dates":[
-        "in_column", // input column name (type: str) 
-        "date_format", // format of date values in column (type: str), e.g. '%d.%m.%Y' is for '01.01.2020' 
-        "timestamp" // timestamp flag (type: bool)
+        "in_columns", // input column name (type: list[str]) 
+        "date_formats", // format of date values in column (type: list[str]), e.g. '%d.%m.%Y' is for '01.01.2020' 
+        "timestamps" // timestamp flag (type: list[bool])
     ],
         // applying regex to string values 
     "apply_regex":[
-        "in_column", // input column name (type: str) 
-        "out_column", // output column name (type: str)
-        "method", // regex method (type: str):
+        "in_columns", // input column name (type: list[str]) 
+        "out_columns", // output column name (type: list[str])
+        "methods", // regex method (type: list[str]):
                                  // `search`
                                  // `split`
                                  // `sub`
-        "pattern", // regex pattern (type: str)
-        "inplace", // change `in_column` or create `out_column` 
-        "maxsplit", // `maxsplit` arg for `re.split`
-        "rep_value", // replacement value for `re.sub`
-        "count", // `count` argument `re.sub`
-        "index", // 
-        "group" // 
+        "patterns", // regex pattern (type: list[str])
+        "inplaces", // change `in_column` or create `out_column` (type: list(bool)) 
+        "maxsplits", // `maxsplit` arg for `re.split` (type: list(int))
+        "rep_values", // replacement value for `re.sub` (type: list(str))
+        "counts", // `count` argument `re.sub` (type: list(int))
+        "indexes", // (type: list)
+        "groups" // (type: list[int])
     ],
         // logarithm transformation
     "log_transform":[
@@ -169,7 +170,7 @@ For** automatic project checking, we have set some limitations to the data prepr
     "normalize":[
         "in_columns" // input columns names (type: list of strings)
     ],
-        // z-score standartization
+        // z-score standardization
     "standardize":[
         "in_columns" // input columns names (type: list of strings)
     ],
@@ -353,26 +354,7 @@ Now we will define processing operations and their descriptions regarding mentio
 ```python
 train['FamilySize'] = train['SibSp'] + train['Parch'] + 1
 ```
-`specification`:
-```
-{
-    "operation_number":1,
-    "operation_name":"columns_combination",
-    "params":{
-        "in_columns":[
-            "SibSp",
-            "Parch"
-        ],
-        "out_column":"FamilySize",
-        "coefficients":[
-            1,
-            1
-        ],
-        "bias":1,
-        "method":"addition"
-    }
-}
-```
+
 **2. replace value**
 
 `code`:
@@ -380,76 +362,28 @@ train['FamilySize'] = train['SibSp'] + train['Parch'] + 1
 train['IsAlone'] = 0
 train.loc[train['FamilySize'] == 1, 'IsAlone'] = 1
 ```
-`specification`:
-```
-{
-    "operation_number":2,
-    "operation_name":"replace",
-    "params":{
-        "in_column":"IsAlone",
-        "old_value":0,
-        "new_value":1,
-        "condition_column":"FamilySize",
-        "condition":"equal",
-        "condition_value":1,
-        "default":0,
-        "inplace":"False"
-    }
-}
-```
+
 **3. fill Nan with mode**
 
 `code`:
 ```python
 train['Embarked'] = train['Embarked'].fillna(train['Embarked'].mode()[0])
 ```
-`specification`:
-```
-{
-    "operation_number":3,
-    "operation_name":"fill_nans",
-    "params":{
-        "in_column":"Embarked",
-        "method":"mode"
-    }
-}
-```
+
 **4. fill Nan with median**
 
 `code`:
 ```python
 train['Fare'] = train['Fare'].fillna(train['Fare'].median())
 ```
-`specification`:
-```
-{
-    "operation_number":4,
-    "operation_name":"fill_nans",
-    "params":{
-        "in_column":"Fare",
-        "method":"median"
-    }
-}
-```
+
 **5. binning with qcut**
 
 `code`:
 ```python
 train['Fare'] = pd.qcut(train['Fare'], 4)
 ```
-`specification`:
-```
-{
-    "operation_number":5,
-    "operation_name":"bins",
-    "params":{
-        "in_column":"Fare",
-        "method":"qcut",
-        "bins_num":4,
-        "inplace":"True"
-    }
-}
-```
+
 **6. fill Nan with values from random distribution**
 
 `code`:
@@ -461,57 +395,21 @@ rng = np.random.RandomState(42)
 age_null_random_list = rng.uniform(age_avg - age_std, age_avg + age_std, size=age_null_count)
 train['Age'][np.isnan(train['Age'])] = age_null_random_list
 ```
-`specification`:
-```
-    {
-        "operation_number":6,
-        "operation_name":"fill_nans",
-        "params":{
-            "in_column":"Age",
-            "method":"random"
-        }
-    }
-```
+
 **7. binning with cut**
 
 `code`:
 ```python
 train['Age'] = pd.cut(train['Age'], 5)
 ```
-`specification`:
-```python
-{
-    "operation_number":7,
-    "operation_name":"bins",
-    "params":{
-        "in_column":"Age",
-        "method":"cut",
-        "bins_num":5,
-        "inplace":"True"
-    }
-}
-```
+
 **8. apply regex**
 
 `code` (using previously mentioned `get_title` function):
 ```python
 train['Title'] = train['Name'].apply(get_title)
 ```
-`specification`:
-```
-{
-    "operation_number":8,
-    "operation_name":"apply_regex",
-    "params":{
-        "in_column":"Name",
-        "out_column":"Title",
-        "method":"search",
-        "pattern":" ([A-Za-z]+)\\.",
-        "group":1,
-        "inplace":"False"
-    }
-}
-```
+
 **9. replace value**
 
 `code`:
@@ -519,90 +417,28 @@ train['Title'] = train['Name'].apply(get_title)
 train['Title'] = train['Title'].replace(['Lady', 'Countess', 'Capt', 'Col', 'Don', 'Dr',
                                         'Major', 'Rev', 'Sir', 'Jonkheer', 'Dona'],
                                         'Rare')
-```
-`specification`:
-```
-{
-    "operation_number":9,
-    "operation_name":"replace",
-    "params":{
-        "in_column":"Title",
-        "old_value":[
-            "Lady",
-            "Countess",
-            "Capt",
-            "Col",
-            "Don",
-            "Dr",
-            "Major",
-            "Rev",
-            "Sir",
-            "Jonkheer",
-            "Dona"
-        ],
-        "new_value":"Rare",
-        "inplace":"True"
-    }
-}
-```
+
 **10. replace value**
 
 `code`:
 ```python
     train['Title'] = train['Title'].replace(['Mlle', 'Ms'], 'Miss')
 ```
-`specification`:
-```
-{
-    "operation_number":10,
-    "operation_name":"replace",
-    "params":{
-        "in_column":"Title",
-        "old_value":[
-            "Mlle",
-            "Ms"
-        ],
-        "new_value":"Miss",
-        "inplace":"True"
-    }
-}
-```
+
 **11. replace value**
 
 `code`:
 ```python
     train['Title'] = train['Title'].replace('Mme', 'Mrs')
 ```
-`specification`:
-```
-{
-    "operation_number":11,
-    "operation_name":"replace",
-    "params":{
-        "in_column":"Title",
-        "old_value":"Mme",
-        "new_value":"Mrs",
-        "inplace":"True"
-    }
-}
-```
+
 **12. fill Nans with 0**
 
 `code`:
 ```python
     train['Title'] = train['Title'].fillna(0)
 ```
-`specification`:
-```
-{
-    "operation_number":12,
-    "operation_name":"fill_nans",
-    "params":{
-        "in_column":"Title",
-        "method":"zero"
-    }
-}
-```
+
 **13. drop columns**
 
 `code`:
@@ -611,24 +447,7 @@ drop_elements = ['PassengerId', 'Name', 'Ticket', 'Cabin',
                  'SibSp', 'Parch', 'FamilySize']
 train = train.drop(drop_elements, axis=1)
 ```
-`specification`:
-```
-{
-    "operation_number":13,
-    "operation_name":"drop_columns",
-    "params":{
-        "in_columns":[
-            "PassengerId",
-            "Name",
-            "Ticket",
-            "Cabin",
-            "SibSp",
-            "Parch",
-            "FamilySize"
-        ]
-    }
-}
-```
+
 **14. encode labels**
 
 `code`:
@@ -654,22 +473,7 @@ train = train.drop(drop_elements, axis=1)
     le.fit(self.dataset['Age'])
     self.dataset['Age'] = le.transform(self.dataset['Age'])
 ```
-`specification`:
-```
-{
-    "operation_number":14,
-    "operation_name":"encode_labels",
-    "params":{
-        "in_columns":[
-            "Gender",
-            "Title",
-            "Embarked",
-            "Fare",
-            "Age"
-        ]
-    }
-}
-```
+
 Great! Now that we have defined all preprocessing operations, let's gather them under the `Dataloader` class:
 
 `utils/dataloader.py`
@@ -758,7 +562,7 @@ class DataLoader(object):
         le.fit(self.dataset['Age'])
         self.dataset['Age'] = le.transform(self.dataset['Age'])
 
-        return self.dataset.values
+        return self.dataset
 ```
 That's how the data looks like after preprocessing:
 
@@ -768,7 +572,10 @@ That's how the data looks like after preprocessing:
 
 Let's consider the parts which are needed to check your project. 
 
-First is the final look of the `settings/specifications.json`:
+> **Important note:**
+Note, that you can pass a list of columns names and other parameters to each operation, so think about the correct order of operations to opimize their quantity in `specifications.json`.  
+
+Here is the final look of the `settings/specifications.json`:
 ```
 {
     "description":{
@@ -800,144 +607,166 @@ First is the final look of the `settings/specifications.json`:
             "operation_number":1,
             "operation_name":"columns_combination",
             "params":{
-                "in_columns":[
-                    "SibSp",
-                    "Parch"
+                "in_columns_list":[
+                    [
+                        "SibSp",
+                        "Parch"
+                    ]
                 ],
-                "out_column":"FamilySize",
-                "coefficients":[
-                    1,
+                "out_columns":[
+                    "FamilySize"
+                ],
+                "coefficients_list":[
+                    [
+                        1,
+                        1
+                    ]
+                ],
+                "biases":[
                     1
                 ],
-                "bias":1,
-                "method":"addition"
+                "methods":[
+                    "addition"
+                ]
             }
         },
         {
             "operation_number":2,
             "operation_name":"replace",
             "params":{
-                "in_column":"IsAlone",
-                "old_value":0,
-                "new_value":1,
-                "condition_column":"FamilySize",
-                "condition":"equal",
-                "condition_value":1,
-                "default":0,
-                "inplace":"False"
+                "in_columns":[
+                    "IsAlone"
+                ],
+                "old_values":[
+                    0
+                ],
+                "new_values":[
+                    1
+                ],
+                "condition_columns":[
+                    "FamilySize"
+                ],
+                "conditions":[
+                    "equal"
+                ],
+                "condition_values":[
+                    1
+                ],
+                "defaults":[
+                    0
+                ],
+                "inplaces":[
+                    "False"
+                ]
             }
         },
         {
             "operation_number":3,
-            "operation_name":"fill_nans",
+            "operation_name":"apply_regex",
             "params":{
-                "in_column":"Embarked",
-                "method":"mode"
+                "in_columns":[
+                    "Name"
+                ],
+                "out_columns":[
+                    "Title"
+                ],
+                "methods":[
+                    "search"
+                ],
+                "patterns":[
+                    " ([A-Za-z]+)\\."
+                ],
+                "groups":[
+                    1
+                ],
+                "inplaces":[
+                    "False"
+                ]
             }
         },
         {
             "operation_number":4,
+            "operation_name":"replace",
+            "params":{
+                "in_columns":[
+                    "Title",
+                    "Title",
+                    "Title"
+                ],
+                "old_values":[
+                    [
+                        "Lady",
+                        "Countess",
+                        "Capt",
+                        "Col",
+                        "Don",
+                        "Dr",
+                        "Major",
+                        "Rev",
+                        "Sir",
+                        "Jonkheer",
+                        "Dona"
+                    ],
+                    [
+                        "Mlle",
+                        "Ms"
+                    ],
+                    "Mme"
+                ],
+                "new_values":[
+                    "Rare",
+                    "Miss",
+                    "Mrs"
+                ],
+                "inplaces":[
+                    "True",
+                    "True",
+                    "True"
+                ]
+            }
+        },
+        {
+            "operation_number":5,
             "operation_name":"fill_nans",
             "params":{
-                "in_column":"Fare",
-                "method":"median"
+                "in_columns":[
+                    "Fare",
+                    "Age",
+                    "Title",
+                    "Embarked"
+                ],
+                "methods":[
+                    "qcut",
+                    "random",
+                    "zero",
+                    "mode"
+                ]
             }
         },
         {
             "operation_number":5,
             "operation_name":"bins",
             "params":{
-                "in_column":"Fare",
-                "method":"qcut",
-                "bins_num":4,
-                "inplace":"True"
+                "in_columns":[
+                    "Fare",
+                    "Age"
+                ],
+                "methods":[
+                    "qcut",
+                    "cut"
+                ],
+                "bins_nums":[
+                    4,
+                    5
+                ],
+                "inplaces":[
+                    "True",
+                    "True"
+                ]
             }
         },
         {
             "operation_number":6,
-            "operation_name":"fill_nans",
-            "params":{
-                "in_column":"Age",
-                "method":"random"
-            }
-        },
-        {
-            "operation_number":7,
-            "operation_name":"bins",
-            "params":{
-                "in_column":"Age",
-                "method":"cut",
-                "bins_num":5,
-                "inplace":"True"
-            }
-        },
-        {
-            "operation_number":8,
-            "operation_name":"apply_regex",
-            "params":{
-                "in_column":"Name",
-                "out_column":"Title",
-                "method":"search",
-                "pattern":" ([A-Za-z]+)\\.",
-                "group":1,
-                "inplace":"False"
-            }
-        },
-        {
-            "operation_number":9,
-            "operation_name":"replace",
-            "params":{
-                "in_column":"Title",
-                "old_value":[
-                    "Lady",
-                    "Countess",
-                    "Capt",
-                    "Col",
-                    "Don",
-                    "Dr",
-                    "Major",
-                    "Rev",
-                    "Sir",
-                    "Jonkheer",
-                    "Dona"
-                ],
-                "new_value":"Rare",
-                "inplace":"True"
-            }
-        },
-        {
-            "operation_number":10,
-            "operation_name":"replace",
-            "params":{
-                "in_column":"Title",
-                "old_value":[
-                    "Mlle",
-                    "Ms"
-                ],
-                "new_value":"Miss",
-                "inplace":"True"
-            }
-        },
-        {
-            "operation_number":11,
-            "operation_name":"replace",
-            "params":{
-                "in_column":"Title",
-                "old_value":"Mme",
-                "new_value":"Mrs",
-                "inplace":"True"
-            }
-        },
-        {
-            "operation_number":12,
-            "operation_name":"fill_nans",
-            "params":{
-                "in_column":"Title",
-                "method":"zero"
-            }
-        },
-        {
-            "operation_number":13,
             "operation_name":"drop_columns",
             "params":{
                 "in_columns":[
@@ -952,7 +781,7 @@ First is the final look of the `settings/specifications.json`:
             }
         },
         {
-            "operation_number":14,
+            "operation_number":7,
             "operation_name":"encode_labels",
             "params":{
                 "in_columns":[
