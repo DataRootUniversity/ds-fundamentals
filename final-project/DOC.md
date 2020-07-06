@@ -93,13 +93,14 @@ For** automatic project checking, we have set some limitations to the data prepr
         // filling Nans in different ways
     "fill_nans":[
         "in_columns", // input column names (type: list[str]) 
-        "methods" // methods of filling Nans (type: list[str]): 
+        "methods", // methods of filling Nans (type: list[str]): 
                                         // `zero` - fill Nans with 0
                                         // `mean` - fill Nans with column mean
                                         // `mode` - fill Nans with column mode
                                         // `median` - fill Nans with column median
                                         // `custom` - fill Nans with custom value
                                         // `random` - fill Nans with random values in range (avg - std, avg + std) for numeric column type, random column values for string column type
+        "custom_values" // custom values for filling Nans (type: list) 
     ],
         // split column values on bins inplace or by adding new column with name 'in_column_categorical'
     "bins":[
