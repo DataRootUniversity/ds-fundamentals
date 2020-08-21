@@ -874,67 +874,20 @@ Upon this we need some interactor to be able to play game manually.
 
 ### Interactor
 
-Since our gameplay is very simple, we can define one key for each action:
+Since our gameplay is very simple, we can define one key for each action, here we suggest to use arrows to control snake's movement direction:
 
-- `w` is for `up` (0)
-- `s` is for `down` (2)
-- `a` is for `left` (3)
-- `d` if for `right` (4)
+- `⬆` is for `up` (0)
+- `⬇` is for `down` (2)
+- `⬅` is for `left` (3)
+- `⮕` if for `right` (4)
 
 By the way, you can define any other keys suitable for you.
 Here is the code of the interactor `interactor.py`:
 
-(for UNIX based OS) 
 ```python
-import sys, tty, select
-import random
+import random, time
 
-from env.snake_env import SnakeEnv
-
-
-def interact():
-    """
-    Human interaction with the environment
-    """
-    tty.setcbreak(sys.stdin)
-    env = SnakeEnv()
-    done = False
-    r = 0
-    action = random.randrange(4)
-
-    while not done:
-        pressed, _, _ = select.select([sys.stdin], [], [], 0.5)
-        if pressed:
-            key = sys.stdin.read(1)
-            # up
-            if key == 'w':
-                action = 0
-            # down
-            elif key == 's':
-                action = 2
-            # left
-            elif key == 'a':
-                action = 3
-            # right
-            elif key == 'd':
-                action = 1
-
-        obs, reward, done, info = env.step(action)
-        env.render(mode='human')
-        r += reward
-    return r
-
-
-if __name__ == '__main__':
-    interact()
-```
-
-(for Windows)
-```python
-import random
-import msvcrt
-import time
-
+from pyglet.window.key import MOTION_UP, MOTION_DOWN, MOTION_LEFT, MOTION_RIGHT
 from env.snake_env import SnakeEnv
 
 
@@ -946,32 +899,44 @@ def interact():
     done = False
     r = 0
     action = random.randrange(4)
+    delay_time = 0.2
+
+    # After the first run of the method env.render()
+    # env.renderer.viewer obtains an attribute 'window'
+    # which is a pyglet.window.Window object
+    env.render(mode='human')
+
+    # Use the arrows to control the snake's movement direction
+    @env.renderer.viewer.window.event
+    def on_text_motion(motion):
+        """
+        Events to actions mapping
+        """
+        nonlocal action
+        if motion == MOTION_UP:
+            action = 0
+        elif motion == MOTION_DOWN:
+            action = 2
+        elif motion == MOTION_LEFT:
+            action = 3
+        elif motion == MOTION_RIGHT:
+            action = 1
 
     while not done:
-        if msvcrt.kbhit():
-            key = msvcrt.getch().decode('utf-8')
-            # up
-            if key == 'w':
-                action = 0
-            # down
-            elif key == 's':
-                action = 2
-            # left
-            elif key == 'a':
-                action = 3
-            # right
-            elif key == 'd':
-                action = 1
-
+        time.sleep(delay_time)
         obs, reward, done, info = env.step(action)
         env.render(mode='human')
-        r += reward
-        time.sleep(0.4)
+        if reward:
+            r += reward
+            # Speeding up snake after eating food
+            delay_time -= 1/6 * delay_time
+
     return r
 
 
 if __name__ == '__main__':
     interact()
+
 ```
 
 Now you can run the script with the command `python interactor.py` (debug in case of exceptions). 
@@ -982,7 +947,7 @@ Now you can run the script with the command `python interactor.py` (debug in cas
 
 That what you'll see if everything is right. **The terminal window must be active while playing!**
 
-To submit your project to the bot you need to compress your project to `.zip` with following structure:
+To submit your project to the bot you need to compress your project to `.zip` with the following structure (validator will not accept archive with a different structure):
 ```
 Archive.zip
     ├── env    
