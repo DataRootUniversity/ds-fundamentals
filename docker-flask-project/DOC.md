@@ -89,8 +89,8 @@ app
 
 ## Main components
 
-> In this part, we're going to code a bit. I hope, you've already installed [**PyCharm**](https://www.jetbrains.com/pycharm/download/#section=mac) to your machine.
-Also, you'll need to install [**Docker**](https://www.postgresql.org/download/).
+> In this part, we're going to code a bit. I hope, you've already installed [**PyCharm**](https://www.jetbrains.com/pycharm/download/) to your machine.
+Also, you'll need to install [**Docker**](https://www.docker.com).
 
 ### Setting up a database
 
