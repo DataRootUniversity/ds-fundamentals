@@ -968,4 +968,4 @@ Archive.zip
 
 Upload it to your Google Drive and set rights as it mentioned in the starting guide. Use instructions from the `DRU-bot` and submit the command - then you'll receive results.
 
-If you have any questions - just DM me (@Alexandra Severinchik) and we'll solve them :)
+If you have any questions - just DM us (`@DRU Team`) and we'll solve them :)

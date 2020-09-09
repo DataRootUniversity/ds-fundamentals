@@ -448,24 +448,24 @@ db.init_app(app)
 with app.app_context():
     db.create_all()
     actor = Actor.create(**data_actor)
-    print('created actor:', actor.__dict__, '\\n')
+    print('created actor:', actor.__dict__, '\n')
 
     movie = Movie.create(**data_movie)
-    print('created movie:', movie.__dict__, '\\n')
+    print('created movie:', movie.__dict__, '\n')
 
     upd_actor = Actor.update(1, **data_actor_upd)
-    print('updated actor:', upd_actor.__dict__, '\\n')
+    print('updated actor:', upd_actor.__dict__, '\n')
 
     upd_movie = Movie.update(1, **data_movie_upd)
-    print('updated movie:', upd_movie.__dict__, '\\n')
+    print('updated movie:', upd_movie.__dict__, '\n')
 
     add_rels_actor = Actor.add_relation(1, upd_movie)
     movie_2 = Movie.create(**data_movie)
     add_more_rels_actor = Actor.add_relation(1, movie_2)
-    print('relations list:', add_more_rels_actor.filmography, '\\n')
+    print('relations list:', add_more_rels_actor.filmography, '\n')
 
     clear_rels_actor = Actor.clear_relations(1)
-    print('all relations cleared:', clear_rels_actor.filmography, '\\n')
+    print('all relations cleared:', clear_rels_actor.filmography, '\n')
 
     del_actor = Actor.delete(1)
     print('actor deleted:', del_actor)
@@ -869,4 +869,4 @@ You can test it the same way you did it earlier.
 
 To submit the project, upload the image to the [`Docker Hub`](https://hub.docker.com/), and provide its name to the `@DRU-bot`.
 
-If you have any questions, DM me (`@Alexandra Severinchik`) in `Slack`!
+If you have any questions, DM us (`@DRU Team`) in `Slack`!
