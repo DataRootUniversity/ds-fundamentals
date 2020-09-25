@@ -869,4 +869,4 @@ You can test it the same way you did it earlier.
 
 To submit the project, upload the image to the [`Docker Hub`](https://hub.docker.com/), and provide its name to the `@DRU-bot`.
 
-If you have any questions, DM us (`@DRU Team`) in `Slack`!
+If you have any questions, write `@DRU Team` in Slack!

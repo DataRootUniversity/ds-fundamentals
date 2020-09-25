@@ -1161,4 +1161,6 @@ CMD ["python", "./app.py"]
 ```
 Upload the image to the [Docker Hub](https://hub.docker.com/), submit your project, and that's it.
 
-Now it's time to come up with a task and data, and implement all the steps from the tutorial for your own project. Good luck, have fun! 
+Now it's time to come up with a task and data, and implement all the steps from the tutorial for your own project. Good luck, have fun!       
+
+If you have any questions, write `@DRU Team` in Slack!
