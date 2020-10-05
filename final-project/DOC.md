@@ -418,6 +418,7 @@ train['Title'] = train['Name'].apply(get_title)
 train['Title'] = train['Title'].replace(['Lady', 'Countess', 'Capt', 'Col', 'Don', 'Dr',
                                         'Major', 'Rev', 'Sir', 'Jonkheer', 'Dona'],
                                         'Rare')
+```
 
 **10. replace value**
 
