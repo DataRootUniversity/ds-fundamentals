@@ -429,6 +429,8 @@ class World(object):
                     chosen_position = (self.food_position[0] - 1, self.food_position[1] + 1)
                 available_food_positions.remove(chosen_position)
         self.world[chosen_position[0], chosen_position[1]] = self.FOOD
+        self.food_position = chosen_position
+
 
     def get_observation(self):
         ...
@@ -519,6 +521,8 @@ class World(object):
                     chosen_position = (self.food_position[0] - 1, self.food_position[1] + 1)
                 available_food_positions.remove(chosen_position)
         self.world[chosen_position[0], chosen_position[1]] = self.FOOD
+        self.food_position = chosen_position
+
 
     def get_observation(self):
         """
@@ -619,6 +623,7 @@ class World(object):
                     chosen_position = (self.food_position[0] - 1, self.food_position[1] + 1)
                 available_food_positions.remove(chosen_position)
         self.world[chosen_position[0], chosen_position[1]] = self.FOOD
+        self.food_position = chosen_position
 
     def get_observation(self):
         """
