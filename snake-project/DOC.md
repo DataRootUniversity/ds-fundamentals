@@ -501,7 +501,7 @@ class World(object):
 
     def init_food(self):
         """
-        Initialize a peace of food
+        Initialize a piece of food
         """
         snake = self.snake if self.snake.alive else None
         # Update available positions for food placement considering snake location
@@ -603,7 +603,7 @@ class World(object):
 
     def init_food(self):
         """
-        Initialize a peace of food
+        Initialize a piece of food
         """
         snake = self.snake if self.snake.alive else None
         # Update available positions for food placement considering snake location
