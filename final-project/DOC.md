@@ -100,7 +100,7 @@ For** automatic project checking, we have set some limitations to the data prepr
                                         // `median` - fill Nans with column median
                                         // `custom` - fill Nans with custom value
                                         // `random` - fill Nans with random values in range (avg - std, avg + std) for numeric column type, random column values for string column type
-        "custom_values" // custom values for filling Nans (type: list) 
+        "custom_values" // custom values for filling Nans (type: dict[str:int/float]) 
     ],
         // split column values on bins inplace or by adding new column with name 'in_column_categorical'
     "bins":[
