@@ -418,6 +418,7 @@ train['Title'] = train['Name'].apply(get_title)
 train['Title'] = train['Title'].replace(['Lady', 'Countess', 'Capt', 'Col', 'Don', 'Dr',
                                         'Major', 'Rev', 'Sir', 'Jonkheer', 'Dona'],
                                         'Rare')
+```
 
 **10. replace value**
 
@@ -1082,7 +1083,7 @@ def predict():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host='127.0.0.1', port=8000) 
+    app.run(debug=True, host='0.0.0.0', port=8000) 
 ```
 Almost there. Let's give it a final check:
 ```python
