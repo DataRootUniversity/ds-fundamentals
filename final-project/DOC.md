@@ -77,7 +77,9 @@ These two stages are usually the **most important** and difficult in the develop
 Our aim now is to get acquainted with the data.
 
 > **Important note:
-For** automatic project checking, we have set some limitations to the data preprocessing module and defined a bunch of operations allowed to perform on data. After completing the project, you'll need to create `specifications.json` where you'll describe all operations you've performed on the data. Here is the list of all operations and their parameters:
+For** automatic project checking, we have set some limitations to the data preprocessing module and defined a bunch of operations allowed to perform on data. To check the correction of your data preprocessing operations we created our own correct implementation of all necessary operation. So at each data preprocessiong step we run your implementation and proper one and then we compare the results. 
+>To check the correction of your data preprocessing operations we created our own correct implementation of all necessary operation. So at each data preprocessiong step we run your implementation and proper one and then we compare the results. That is why after completing the project, you'll need to create `specifications.json` where you'll describe all operations you've performed on the data, so we will be able to reproduce them with our implementation.
+> Here is the list of all operations and their parameters:
 
 ```
 {
@@ -127,7 +129,7 @@ For** automatic project checking, we have set some limitations to the data prepr
     "columns_combination":[
         "in_columns_list", // input columns names (type: list[list, len = 2])
         "out_columns", // output column name (type: list[str]) 
-        "methods", // combination method (type: list[str]): 
+        "methods", // combination method for numeric values (type: list[str]): 
                                         // `addition` - add columns values
                                         // `subtraction` - substract columns values (`in_columns[0]` - `in_columns[1]`)
                                         // `multiplication` - multiply columns values
@@ -190,6 +192,8 @@ For** automatic project checking, we have set some limitations to the data prepr
         // apply one-hot-encoding to specified columns
     "one_hot_encode":[
         "in_columns" // input columns names (type: list of strings)
+                     // output categorical columns names will contain prefix 'category_' 
+                     // (for example value 'feature_1' after one-hot encoding will be converted into column 'category_feature_1')
     ]
 }
 ```
