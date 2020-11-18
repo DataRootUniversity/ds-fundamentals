@@ -884,7 +884,7 @@ Since our gameplay is very simple, we can define one key for each action, here w
 - `⬆` is for `up` (0)
 - `⬇` is for `down` (2)
 - `⬅` is for `left` (3)
-- `⮕` if for `right` (4)
+- `⮕` is for `right` (4)
 
 By the way, you can define any other keys suitable for you.
 Here is the code of the interactor `interactor.py`:
