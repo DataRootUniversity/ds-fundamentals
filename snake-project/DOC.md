@@ -1,4 +1,4 @@
-# Snake Env Tutorial
+﻿# Snake Env Tutorial
 
 *Greetings, my young Padawan! Welcome to the glorious battle in the war for **Data Science Fundamentals**! 
 The aim of this project is to show you the basic usage of **Python** and do some fun practice. We tried to make it in the most interesting way, so we hope you will like it :)*
@@ -8,6 +8,7 @@ The aim of this project is to show you the basic usage of **Python** and do some
 -  [Project Structure](#project-structure)
 -  [Main Components](#main-components)
     -  [Gym Interface](#gym-interface)
+    -  [Before we start](#before-we-start)
     -  [Constants](#constants)
     -  [Snake Entity](#snake-entity)
     -  [World Entity](#world-entity)
@@ -32,6 +33,13 @@ The **[Gym](https://gym.openai.com/)** is a toolkit for [**RL**](https://medium.
 
 Every **environment** contains all the **necessary functionality** to **run an agent** and allow it to **learn**. And don't worry, the implementation of an environment is not RL itself. It won't go beyond the concepts you're not familiar with, but in case you'll be working with the RL system, it will give you useful knowledge for future work.
 
+**Important note:**
+>  The main purpose of the Snake Project is not to show you how to create "Snake"-like games, but to teach you how to use OOP and introduce you to working on complex projects.
+
+Significant part of the functions are already written for you. For sure, the need for some functions will be unclear.
+In most cases, bot need them to validate your code correctly. 
+So, just keep in mind, there is no necessary to understand it from the beginning to the end.  
+
 ## Project Structure
 
 Here we'll define the structure of our project to keep the code organized. 
@@ -51,10 +59,18 @@ snake
     ├── settings             - here you can store different constant values, connection parameters, etc.
     │   └── constants.py     - multiple constants storage for their convenient usage.
     │
-    └── interactor.py        - script to allow you playing Snake manually.
+    ├── local_validator			 	- validator for your code are stored here
+    |   ├── validator   	 		- tests core
+    |	|	├── test_constants.py	- some initial and expected constants
+    |	|	└── test_validator.py	- main test functions 
+    |	|
+    |	├── test_snake_step.py		- local validator for snake's step method
+    |	└── test_world.py			- local validator for world methods
+	|    
+    └── interactor.py        		- script to allow you playing Snake manually.
 ```
 
-Now you have to  define the same structure in your local file system.
+Now define the same structure in your local file system.
 
 ## Main Components
 
@@ -100,9 +116,30 @@ And the last is the `render` method which is used to **render** the environment 
 
 To make our code **simple** to read we'll hide the **backbone** of main methods in **separate files**. You'll be given the code **templates**, so your task is to **fill** in the **gaps**. But firstly let's define some **constants** we will use in the project.
 
-> **Important note**
-In order to complete this project, it's better for you to have installed [PyCharm](https://www.jetbrains.com/pycharm/download/). To install different packages use [virtualenv](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/).
+>**If it still stays unclear - don't worry**
+>We will explain everything in detail further in the guide
 
+**Important Notes:**
+
+1. In order to complete this project, it's better for you to have installed [**PyCharm**](https://www.jetbrains.com/pycharm/download/). To install different packages use [virtualenv](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/).
+2. If you are student of any university cou can apply for [**JetBrains Free Educational Licenses**](https://www.jetbrains.com/community/education/#students) and get **PyCharm Professional** for free (only for the period of study)
+3. (At the time of writing) if you have **Python 3.9**, when installing ***gym*** you may have version compatibility issues. To fix this you should download **Python 3.8** or older version
+---
+### Before we start
+To understand what we want to have in the end watch this little demo:
+
+<div align="center">
+    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/snake-project/figures/snake.gif?raw=true">
+</div>
+
+**As you can see, in the game you have to:**
+- Initialize the Snake
+- Move Snake with some increasing speed in the direction of its head
+- Control the snake with buttons 
+- Spawn food randomly 
+- Grow Snake after eating food
+- Defeat in case of eating itself or the wall
+---
 ### Constants
 
 There are some unchanging things in the world of Snake:
@@ -120,9 +157,10 @@ import numpy as np
 SIZE = (32, 32) # size of the grid world
 SNAKE_SIZE = 3 # initial size of the snake
 # numeric representation for different types of objects 
-WALL = 255
-FOOD_BLOCK = 64
-SNAKE_BLOCK = 100
+# later you will see, that this numbers define a block colour
+WALL = 255 # white
+FOOD_BLOCK = 64 # red
+SNAKE_BLOCK = 100 # green
 """
 DIRECTIONS:
     0: UP
@@ -130,6 +168,7 @@ DIRECTIONS:
     2: DOWN
     3: LEFT
 """
+# remember this DIRECTIONS values, we'll use it soon 
 DIRECTIONS = [np.array([-1, 0]),
               np.array([0, 1]),
               np.array([1, 0]),
@@ -142,34 +181,14 @@ EAT_REWARD = 1.0
 
 In this project, we will use [`numpy`](https://numpy.org/) package for convenient indexing of the Snake's grid world matrix. You will work with it more in the next module. For now, it will be enough if you go through this [**documentation**](https://numpy.org/devdocs/user/basics.indexing.html).
 
+---
 ### Snake Entity
-
-Let's start with defining the Snake properties. 
-
-For now, our snake needs to know how to move, so let's implement class `Snake` with method `step`. In order to do this, we need to open the `env/core/snake.py`:
-```python
-import numpy as np
-
-from settings.constants import DIRECTIONS, SNAKE_BLOCK
-
-
-class Snake:
-    def __init__(self, param1, param2, ...):
-        # Information snake need to know to make the move
-        ...
-
-    def step(self, action):
-        # Execute one-time step within the environment
-        ...
-```
-
-Now we need to set a bunch of parameters that the environment will give to our snake:
-
+Let's initialize the Snake we need to set a bunch of parameters that the environment will give to our snake:
 - head position
-- direction
+- current direction
 - length
 
-Let's finish the constructor:
+In order to do this, we need to open the `env/core/snake.py`:
 ```python
 import numpy as np
 
@@ -184,9 +203,9 @@ class Snake:
         @param length: int
         """
         # Information snake need to know to make the move
-                self.snake_block = SNAKE_BLOCK
+        self.snake_block = SNAKE_BLOCK
         self.current_direction_index = direction_index
-                # Alive identifier
+        # Alive identifier
         self.alive = True
         # Place the snake
         self.blocks = [head_position]
@@ -195,13 +214,34 @@ class Snake:
             # Direction inverse of moving
             current_position = current_position - DIRECTIONS[self.current_direction_index]
             self.blocks.append(tuple(current_position))
-
+            
     def step(self, action):
         # Execute one-time step within the environment
                 ...
 ```
+**Clarifying what's going on here:**
+1. The snake itself is nothing but array of tuples of its coordinates . This array is stored in `self.blocks` 
+2. Initializing `Snake` we added its head first
+3. Then went through the all `Snake` length adding other blocks, that lie in the opposite direction to the direction of its head
+4. `DIRECTIONS` is an array, that contains `np.arrays` of "changes" of coordinates while moving in the certain direction
+5.  `direction_index` is *int* in range from 0 to 3, that defines the direction of Snake's moving. More precisely, it defines the index in `DIRECTIONS` of "change" of coordinates, while moving in certain direction. 
 
-Upon this you need to implement the `step` method using the following template (all **instructions** specified as **comments**):
+>**Important Note:**
+>Further along the course, not everything will be explained in as much detail as here.
+So, you need to get used to understand complex things that don't have a clear description
+---
+**Now we need to implement `step` method**
+In `interactor.py` you'll see, that snake moves one block in the direction of it's head every (by default) 0.2 sec
+This Snake's single movement is implemented in `step` method
+Parameter `action` is the direction index of its head, which is determined by pressing a certain button on the keyboard:
+
+- `⬆` is for up - direction_index is `0`
+- `⬇` is for down - direction_index is `2`
+- `⮕` if for right - direction_index is `1`
+- `⬅` is for left - direction_index is `3`
+
+
+Use the following template:
 ```python
 import numpy as np
 
@@ -216,9 +256,9 @@ class Snake:
         @param length: int
         """
         # Information snake need to know to make the move
-                self.snake_block = SNAKE_BLOCK
+        self.snake_block = SNAKE_BLOCK
         self.current_direction_index = direction_index
-                # Alive identifier
+        # Alive identifier
         self.alive = True
         # Place the snake
         self.blocks = [head_position]
@@ -230,32 +270,84 @@ class Snake:
 
     def step(self, action):
         """
-        @param action: int
+        @param action: int 
         @param return: tuple, tuple
         """
         # Check if action can be performed (do nothing if in the same direction or opposite)
+        # Example: if snake looks left, pressing "left" or "right" buttons should change nothing
         if () and ():
             self.current_direction_index = action
-        # Remove tail
+        # Remove tail (can be implemented in 1 line)
         tail = 
         self.blocks = 
-        # Check new head
+        # Create new head
         new_head = 
         # Add new head
+        # Note: all Snake's coordinates should be tuples (X, Y)
         self.blocks = [new_head] + self.blocks
         return new_head, tail
 ```
+**Let's test it right now!**
+
+To avoid misunderstandings and write code correctly in the future, you should play around with your code and test it in different ways. 
+Download [local_validator](https://dru-bot.s3.eu-central-1.amazonaws.com/local_snake_validator.zip) and put it into the root of your project ([Project Structure](#project-structure))
+
+Then run `local_validator/test_snake_step.py`
+If your Snake moves correctly and have correct types it will print your Snake movements as a response to commands
+>**Expected output:**
+
+>Lets try to use your step method:
+
+>Your Snake initial position: [(5, 5), (5, 4), (5, 3)]
+And Snake initial direction: 1
+
+>Pressing RIGHT button
+Now your Snake position: [(5, 6), (5, 5), (5, 4)]
+And Snake direction: 1
+Direction didnt change
+
+>Pressing LEFT button
+Now your Snake position: [(5, 7), (5, 6), (5, 5)]
+And Snake direction: 1
+Direction didnt change 
+
+>Pressing DOWN button
+Now your Snake position: [(6, 7), (5, 7), (5, 6)]
+And Snake direction: 2
+Direction changed
+
+>Pressing UP button
+Now your Snake position: [(7, 7), (6, 7), (5, 7)]
+And Snake direction: 2
+Direction didnt change
+
+>All actions were completed correctly
+Well done!
+
+If your code is incorrect, validator will explain your mistake 
+>**Example:**
+
+>Wrong type of coordinates:
+They all should be tuples
+But you have: <class 'list'>
+
+Anyway, if explanations are unclear of just if you are curious, you can figure out how it works examining validator's code. There're no magic :)
+
+>**Note:**
+> If local validator disapproves your code, Bot will do as well!
 
 Great! Let's move further and implement the World properties.
 
+---
 ### World Entity
+One important intuition you should have about "Snake" game, that the World of Snake is just a matrix of blocks (Snake blocks, Wall blocks, Food blocks and World blocks)
 
 In the `World` module we need to define such methods as:
 
-- initialize snake
-- initialize food
-- get observation
-- move snake
+- `init_snake`  - creating Snake object
+- `init_food` - randomly spawning food
+- `get_observation` - get World's copy with placed Snake
+- `move_snake` - executing Snake's single movement
 
 `env/core/world.py`:
 ```python
@@ -264,25 +356,24 @@ import random
 
 from settings.constants import DIRECTIONS, SNAKE_SIZE, DEAD_REWARD, \
     MOVE_REWARD, EAT_REWARD, FOOD_BLOCK, WALL
-from .snake import Snake
+from env.core.snake import Snake
 
 
 class World(object):
-    def __init__(self, param1, param2, ...):
+    def __init__(self, size, custom, start_position, start_direction_index, food_position):
             ...
 
     def init_snake(self):
             ...
 
     def init_food(self):
-        ...
-
+	        ...
 
     def get_observation(self):
-        ...
+	        ...
 
     def move_snake(self, action):
-        ...
+	        ...
 ```
 
 The `snake` and the `food` are usually randomly initialized. But in order to check your project, we need to be able to set locations of the objects manually. So we'll add an identifier to check initialization.
@@ -294,7 +385,7 @@ import random
 
 from settings.constants import DIRECTIONS, SNAKE_SIZE, DEAD_REWARD, \
     MOVE_REWARD, EAT_REWARD, FOOD_BLOCK, WALL
-from .snake import Snake
+from env.core.snake import Snake
 
 
 class World(object):
@@ -311,6 +402,7 @@ class World(object):
         self.start_position = start_position
         self.start_direction_index = start_direction_index
         self.food_position = food_position
+        self.current_available_food_positions = None
         # rewards
         self.DEAD_REWARD = DEAD_REWARD
         self.MOVE_REWARD = MOVE_REWARD
@@ -318,21 +410,22 @@ class World(object):
         self.FOOD = FOOD_BLOCK
         self.WALL = WALL
         self.DIRECTIONS = DIRECTIONS
-        # Init a numpy matrix with zeros of predefined size
+        # Init a numpy matrix with zeros of predefined size - that will be the initial World
         self.size = size
-        self.world = np.zeros(size)
-        # Fill in the indexes gaps to add walls to the grid world
+        self.world = 
+        # Fill in the indexes gaps to add walls along the World's boundaries
         self.world[] = self.WALL
         self.world[] = self.WALL
         self.world[] = self.WALL
         self.world[] = self.WALL
-        # Get available positions for placing food (choose all positions where world block = 0)
+        # Get available positions for placing food  
+		# Food should not to be spawned in the Walls
         self.available_food_positions = set(zip(*np.where(self.world == 0)))
         # Init snake
         self.snake = self.init_snake()
         # Set food
-        self.init_food()
-
+        self.init_food() 
+  
     def init_snake(self):
             ...
 
@@ -354,7 +447,7 @@ import random
 
 from settings.constants import DIRECTIONS, SNAKE_SIZE, DEAD_REWARD, \
     MOVE_REWARD, EAT_REWARD, FOOD_BLOCK, WALL
-from .snake import Snake
+from env.core.snake import Snake
 
 
 class World(object):
@@ -371,6 +464,7 @@ class World(object):
         self.start_position = start_position
         self.start_direction_index = start_direction_index
         self.food_position = food_position
+        self.current_available_food_positions = None
         # rewards
         self.DEAD_REWARD = DEAD_REWARD
         self.MOVE_REWARD = MOVE_REWARD
@@ -380,13 +474,14 @@ class World(object):
         self.DIRECTIONS = DIRECTIONS
         # Init a numpy matrix with zeros of predefined size
         self.size = size
-        self.world = np.zeros(size)
-        # Fill in the indexes gaps to add walls to the grid world
+        self.world = 
+        # Fill in the indexes gaps to add walls along the World's boundaries
         self.world[] = self.WALL
         self.world[] = self.WALL
         self.world[] = self.WALL
         self.world[] = self.WALL
-        # Get available positions for placing food (choose all positions where world block = 0)
+        # Get available positions for placing food  
+		# Food should not to be spawned in the Walls
         self.available_food_positions = set(zip(*np.where(self.world == 0)))
         # Init snake
         self.snake = self.init_snake()
@@ -398,9 +493,11 @@ class World(object):
         Initialize a snake
         """         
         if not self.custom:
-            # choose a random position between [SNAKE_SIZE and SIZE - SNAKE_SIZE]
+        	# Choose a random position for spawn the Snake
+        	# Tail should not spawn outside of the box or in the wall   
+			# Remember, coordinates is a tuple(X, Y)
             start_position = 
-            # choose a random direction index
+            # Choose a random direction index
             start_direction_index = 
             new_snake = Snake(start_position, start_direction_index, SNAKE_SIZE)
         else:
@@ -412,22 +509,24 @@ class World(object):
         Initialize a piece of food
         """
         snake = self.snake if self.snake.alive else None
-        # Update available positions for food placement considering snake location
-        available_food_positions = 
+        # Update available positions for food placement considering snake location 
+        # Food should not be spawned in the Snake
+        # self.current_available_food_positions should be the set
+        self.current_available_food_positions= 
         if not self.custom:
-            # Choose a random position from available
+            # Choose a random position from available now
             chosen_position = 
         else:
             chosen_position = self.food_position
             # Code needed for checking your project. Just leave it as it is
             try:
-                available_food_positions.remove(chosen_position)
+                self.current_available_food_positions.remove(chosen_position)
             except:
-                if (self.food_position[0] - 1, self.food_position[1]) in available_food_positions:
+                if (self.food_position[0] - 1, self.food_position[1]) in self.current_available_food_positions:
                     chosen_position = (self.food_position[0] - 1, self.food_position[1])
                 else:
                     chosen_position = (self.food_position[0] - 1, self.food_position[1] + 1)
-                available_food_positions.remove(chosen_position)
+                self.current_available_food_positions.remove(chosen_position)
         self.world[chosen_position[0], chosen_position[1]] = self.FOOD
         self.food_position = chosen_position
 
@@ -439,6 +538,7 @@ class World(object):
         ...
 ```
 
+
 Great! It's time to `get_observation` method. We just need to go through the snake blocks positions array and replace related indexes with the `SNAKE_BLOCK` value:
 ```python
 import numpy as np
@@ -446,7 +546,7 @@ import random
 
 from settings.constants import DIRECTIONS, SNAKE_SIZE, DEAD_REWARD, \
     MOVE_REWARD, EAT_REWARD, FOOD_BLOCK, WALL
-from .snake import Snake
+from env.core.snake import Snake
 
 
 class World(object):
@@ -463,6 +563,7 @@ class World(object):
         self.start_position = start_position
         self.start_direction_index = start_direction_index
         self.food_position = food_position
+        self.current_available_food_positions = None
         # rewards
         self.DEAD_REWARD = DEAD_REWARD
         self.MOVE_REWARD = MOVE_REWARD
@@ -472,13 +573,14 @@ class World(object):
         self.DIRECTIONS = DIRECTIONS
         # Init a numpy matrix with zeros of predefined size
         self.size = size
-        self.world = np.zeros(size)
-        # Fill in the indexes gaps to add walls to the grid world
+        self.world = 
+        # Fill in the indexes gaps to add walls along the World's boundaries
         self.world[] = self.WALL
         self.world[] = self.WALL
         self.world[] = self.WALL
         self.world[] = self.WALL
-        # Get available positions for placing food (choose all positions where world block = 0)
+        # Get available positions for placing food  
+		# Food should not to be spawned in the Walls
         self.available_food_positions = set(zip(*np.where(self.world == 0)))
         # Init snake
         self.snake = self.init_snake()
@@ -490,9 +592,11 @@ class World(object):
         Initialize a snake
         """         
         if not self.custom:
-            # choose a random position between [SNAKE_SIZE and SIZE - SNAKE_SIZE]
+        	# Choose a random position for spawn the Snake
+        	# Tail should not spawn outside of the box or in the wall   
+			# Remember, coordinates is a tuple(X, Y)
             start_position = 
-            # choose a random direction index
+            # Choose a random direction index
             start_direction_index = 
             new_snake = Snake(start_position, start_direction_index, SNAKE_SIZE)
         else:
@@ -504,25 +608,26 @@ class World(object):
         Initialize a piece of food
         """
         snake = self.snake if self.snake.alive else None
-        # Update available positions for food placement considering snake location
-        available_food_positions = 
+        # Update available positions for food placement considering snake location 
+        # Food should not be spawned in the Snake
+        # self.current_available_food_positions should be the set
+        self.current_available_food_positions= 
         if not self.custom:
-            # Choose a random position from available
+            # Choose a random position from available now
             chosen_position = 
         else:
             chosen_position = self.food_position
             # Code needed for checking your project. Just leave it as it is
             try:
-                available_food_positions.remove(chosen_position)
+                self.current_available_food_positions.remove(chosen_position)
             except:
-                if (self.food_position[0] - 1, self.food_position[1]) in available_food_positions:
+                if (self.food_position[0] - 1, self.food_position[1]) in self.current_available_food_positions:
                     chosen_position = (self.food_position[0] - 1, self.food_position[1])
                 else:
                     chosen_position = (self.food_position[0] - 1, self.food_position[1] + 1)
-                available_food_positions.remove(chosen_position)
+                self.current_available_food_positions.remove(chosen_position)
         self.world[chosen_position[0], chosen_position[1]] = self.FOOD
         self.food_position = chosen_position
-
 
     def get_observation(self):
         """
@@ -530,6 +635,7 @@ class World(object):
         """
         obs = self.world.copy()
         snake = self.snake if self.snake.alive else None
+        # Here we placing Snake on the World grid with SNAKE_BLOCKs
         if snake:
             for block in snake.blocks:
                 obs[block[0], block[1]] = snake.snake_block
@@ -540,7 +646,6 @@ class World(object):
     def move_snake(self, action):
         ...
 ```
-
 `move_snake` is the most responsible part. Here we need to execute action checking all conditions and calculate reward. Implement the method using the template:
 ```python
 import numpy as np
@@ -548,7 +653,7 @@ import random
 
 from settings.constants import DIRECTIONS, SNAKE_SIZE, DEAD_REWARD, \
     MOVE_REWARD, EAT_REWARD, FOOD_BLOCK, WALL
-from .snake import Snake
+from env.core.snake import Snake
 
 
 class World(object):
@@ -565,6 +670,7 @@ class World(object):
         self.start_position = start_position
         self.start_direction_index = start_direction_index
         self.food_position = food_position
+        self.current_available_food_positions = None
         # rewards
         self.DEAD_REWARD = DEAD_REWARD
         self.MOVE_REWARD = MOVE_REWARD
@@ -574,13 +680,14 @@ class World(object):
         self.DIRECTIONS = DIRECTIONS
         # Init a numpy matrix with zeros of predefined size
         self.size = size
-        self.world = np.zeros(size)
-        # Fill in the indexes gaps to add walls to the grid world
+        self.world = 
+        # Fill in the indexes gaps to add walls along the World's boundaries
         self.world[] = self.WALL
         self.world[] = self.WALL
         self.world[] = self.WALL
         self.world[] = self.WALL
-        # Get available positions for placing food (choose all positions where world block = 0)
+        # Get available positions for placing food  
+		# Food should not to be spawned in the Walls
         self.available_food_positions = set(zip(*np.where(self.world == 0)))
         # Init snake
         self.snake = self.init_snake()
@@ -592,9 +699,11 @@ class World(object):
         Initialize a snake
         """         
         if not self.custom:
-            # choose a random position between [SNAKE_SIZE and SIZE - SNAKE_SIZE]
+        	# Choose a random position for spawn the Snake
+        	# Tail should not spawn outside of the box or in the wall   
+			# Remember, coordinates is a tuple(X, Y)
             start_position = 
-            # choose a random direction index
+            # Choose a random direction index
             start_direction_index = 
             new_snake = Snake(start_position, start_direction_index, SNAKE_SIZE)
         else:
@@ -606,22 +715,24 @@ class World(object):
         Initialize a piece of food
         """
         snake = self.snake if self.snake.alive else None
-        # Update available positions for food placement considering snake location
-        available_food_positions = 
+        # Update available positions for food placement considering snake location 
+        # Food should not be spawned in the Snake
+        # self.current_available_food_positions should be the set
+        self.current_available_food_positions= 
         if not self.custom:
-            # Choose a random position from available
+            # Choose a random position from available now
             chosen_position = 
         else:
             chosen_position = self.food_position
             # Code needed for checking your project. Just leave it as it is
             try:
-                available_food_positions.remove(chosen_position)
+                self.current_available_food_positions.remove(chosen_position)
             except:
-                if (self.food_position[0] - 1, self.food_position[1]) in available_food_positions:
+                if (self.food_position[0] - 1, self.food_position[1]) in self.current_available_food_positions:
                     chosen_position = (self.food_position[0] - 1, self.food_position[1])
                 else:
                     chosen_position = (self.food_position[0] - 1, self.food_position[1] + 1)
-                available_food_positions.remove(chosen_position)
+                self.current_available_food_positions.remove(chosen_position)
         self.world[chosen_position[0], chosen_position[1]] = self.FOOD
         self.food_position = chosen_position
 
@@ -631,10 +742,11 @@ class World(object):
         """
         obs = self.world.copy()
         snake = self.snake if self.snake.alive else None
+        # Here we placing Snake on the World grid with SNAKE_BLOCKs
         if snake:
             for block in snake.blocks:
                 obs[block[0], block[1]] = snake.snake_block
-            # snakes head
+                        # snakes head
             obs[snake.blocks[0][0], snake.blocks[0][1]] = snake.snake_block + 1
         return obs
 
@@ -661,6 +773,7 @@ class World(object):
                 # Remove old food
                 
                 # Add tail again
+                # Note: all Snake coordinates should be tuples(Y, X)
                 
                 # Request to place new food
                 new_food_needed = 
@@ -676,6 +789,76 @@ class World(object):
             self.init_food()
         return reward, done, self.snake.blocks
 ```
+
+After filling the gaps you should test our methods
+Run `local_validator/test_world.py`
+If your methods works correctly, it will use them to create a World and Snake, then move it to the food ~~and kill it!~~
+>**Expected output:**
+
+>Checking World initialization...
+
+>Your World without Snake looks like:
+[[255. 255. 255. 255. 255. 255. 255. 255. 255. 255.]
+ [255.   0.   0.   0.   0.   0.   0.   0.   0. 255.]
+ [255.   0.   0.   0.   0.   0.   0.   0.   0. 255.]
+ [255.   0.   0.   0.   0.   0.   0.   0.   0. 255.]
+ [255.  64.   0.   0.   0.   0.   0.   0.   0. 255.]
+ [255.   0.   0.   0.   0.   0.   0.   0.   0. 255.]
+ [255.   0.   0.   0.   0.   0.   0.   0.   0. 255.]
+ [255.   0.   0.   0.   0.   0.   0.   0.   0. 255.]
+ [255.   0.   0.   0.   0.   0.   0.   0.   0. 255.]
+ [255. 255. 255. 255. 255. 255. 255. 255. 255. 255.]]
+
+>Checking Snake movements...
+
+>Your World with Snake looks like:
+[[255. 255. 255. 255. 255. 255. 255. 255. 255. 255.]
+ [255.   0.   0.   0.   0.   0.   0.   0.   0. 255.]
+ [255.   0.   0.   0.   0.   0.   0.   0.   0. 255.]
+ [255.   0.   0.   0.   0.   0.   0.   0.   0. 255.]
+ [255.  64.   0.   0. 101.   0.   0.   0.   0. 255.]
+ [255.   0.   0.   0. 100.   0.   0.   0.   0. 255.]
+ [255.   0.   0.   0. 100.   0.   0.   0.   0. 255.]
+ [255.   0.   0.   0.   0.   0.   0.   0.   0. 255.]
+ [255.   0.   0.   0.   0.   0.   0.   0.   0. 255.]
+ [255. 255. 255. 255. 255. 255. 255. 255. 255. 255.]]
+
+>After 3 moves LEFT Snake ate the food and moves 1 DOWN
+Now your World with Snake looks like: 
+[[255. 255. 255. 255. 255. 255. 255. 255. 255. 255.]
+ [255.   0.   0.   0.   0.   0.   0.   0.   0. 255.]
+ [255.   0.   0.   0.   0.   0.   0.   0.   0. 255.]
+ [255.  64.   0.   0.   0.   0.   0.   0.   0. 255.]
+ [255. 100. 100. 100.   0.   0.   0.   0.   0. 255.]
+ [255. 101.   0.   0.   0.   0.   0.   0.   0. 255.]
+ [255.   0.   0.   0.   0.   0.   0.   0.   0. 255.]
+ [255.   0.   0.   0.   0.   0.   0.   0.   0. 255.]
+ [255.   0.   0.   0.   0.   0.   0.   0.   0. 255.]
+ [255. 255. 255. 255. 255. 255. 255. 255. 255. 255.]]
+
+>As you can see, Snake grew up for a 1 block
+
+>And after 1 move LEFT Snake died:
+[[255. 255. 255. 255. 255. 255. 255. 255. 255. 255.]
+ [255.   0.   0.   0.   0.   0.   0.   0.   0. 255.]
+ [255.   0.   0.   0.   0.   0.   0.   0.   0. 255.]
+ [255.  64.   0.   0.   0.   0.   0.   0.   0. 255.]
+ [255.   0.   0.   0.   0.   0.   0.   0.   0. 255.]
+ [255.   0.   0.   0.   0.   0.   0.   0.   0. 255.]
+ [255.   0.   0.   0.   0.   0.   0.   0.   0. 255.]
+ [255.   0.   0.   0.   0.   0.   0.   0.   0. 255.]
+ [255.   0.   0.   0.   0.   0.   0.   0.   0. 255.]
+ [255. 255. 255. 255. 255. 255. 255. 255. 255. 255.]]
+
+>All actions were completed correctly
+Well done!
+
+If your code works incorrectly, validator will explain your mistake
+>**Example:**
+
+>Snake didnt die eating itself
+
+And as always, if explanations are unclear, you can examine validator's test cases by yourself
 
 Fantastic! We finished with the main elements of the environment, and now we need to implement the renderer of the environment.
 
@@ -832,12 +1015,9 @@ class SnakeEnv(gym.Env):
         @param action: int
         @return: np.array (observation after the action), int (reward), bool ('done' flag), np.array (snake)
         """
-        # Check if game is ended
-        
         # Perform the action
         reward, done, snake = 
-        # Disable interactions if snake dead
-        
+         
         return self.world.get_observation(), reward, done, snake
 
     def reset(self,):
@@ -849,7 +1029,7 @@ class SnakeEnv(gym.Env):
 
         # Set 'alive' flag
         
-        # Create world
+        # Create new world
         self.world =
         return self.world.get_observation()
 
@@ -881,10 +1061,10 @@ Upon this we need some interactor to be able to play game manually.
 
 Since our gameplay is very simple, we can define one key for each action, here we suggest to use arrows to control snake's movement direction:
 
-- `⬆` is for `up` (0)
-- `⬇` is for `down` (2)
-- `⬅` is for `left` (3)
-- `⮕` if for `right` (4)
+- `⬆` is for up - direction_index is `0`
+- `⬇` is for down - direction_index is `2`
+- `⮕` if for right - direction_index is `1`
+- `⬅` is for left - direction_index is `3`
 
 By the way, you can define any other keys suitable for you.
 Here is the code of the interactor `interactor.py`:
@@ -954,22 +1134,31 @@ That what you'll see if everything is right. **The terminal window must be activ
 
 To submit your project to the bot you need to compress your project to `.zip` with the following structure (validator will not accept archive with a different structure):
 ```
-Archive.zip
-    ├── env    
-    │   ├── core      
-    │   │   ├── snake.py     
-    │   │   └── world.py    
+snake.zip
+    ├── env                  
+    │   ├── core           
+    │   │   ├── snake.py    
+    │   │   └── world.py   
     │   │
     │   ├── utils            
     │   │   └── renderer.py  
     │   │
-    │   └── snake_env.py  
+    │   └── snake_env.py     
     │
-    ├── settings   
-    │   └── constants.py
+    ├── settings             
+    │   └── constants.py 
     │
-    └── interactor.py
+    ├── local_validator			 		
+    |   ├── validator   	 		
+    |	|	├── test_constants.py	
+    |	|	└── test_validator.py	
+    |	|
+    |	├── test_snake_step.py		
+    |	└── test_world.py			
+	|    
+    └── interactor.py        
 ```
+
 
 Upload it to your Google Drive and set rights as it mentioned in the starting guide. Use instructions from the `DRU-bot` and submit the command - then you'll receive results.
 
