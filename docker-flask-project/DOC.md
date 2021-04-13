@@ -1,51 +1,40 @@
-# RESTful APIs Project Guide
+﻿# RESTful APIs Project Guide
 
-*Hello and welcome to the **RESTful APIs Project** tutorial! During the next 1.5-2 hours you'll learn how to **structure** your project and **develop** your own **web API**.*
+*Hello and welcome to the **RESTful APIs Project** tutorial! Today you'll learn how to **structure** your project and **develop** your own **web API**.*
 
 There are lots of different ways to structure your RESTful API. Here we have gathered the **best practices** of project organization. During the tutorial, we will provide an example of a well-structured project to show you how to make your code **organized** and **effective**.
 
 # Table Of Contents
 
 - [Intro](#intro)
-- [Try it first](#try-it-first)
-- [Details](#details)
-    - [Folder structure](#folder-structure)
-    - [Main Components](#main-components)
-        - [Models](#models)
-        - [Controllers](#controllers)
-        - [Core](#core)
+- [Before we start](#before-we-start)
+- [Folder structure](#folder-structure)
+- [Main Components](#main-components)
+	- [Setting up your database](#setting-up-your-database)
+	- [Models](#models)
+    - [Controllers](#controllers)
+    - [Core](#core)
 - [Test your app](#test-your-app)
 - [Dockerize your app](#dockerize-your-app)
 
-# Intro
+## Intro
 
 In this tutorial, we're going to implement a web **API** (**A**pplication **P**rogramming **I**nterface) using **REST** (**RE**presentational **S**tateless **T**ransfer) approach and based on **MVC** (**M**odel, **V**iew, **C**ontroller) architectural pattern. Our service will allow users to interact with the database and make basic **CRUD** (**C**reate, **R**ead, **U**pdate, **D**elete) operations. We will use **PostgreSQL** as a database because of its robustness and high performance.
 
 This template is based on best structuring patterns, so it can be adapted for any other similar project.
 
-# Try it first
+## Before we start 
+Now you will start building you own API, that contains 2 entities (Actors and Movies) and their relations. 
+The main purpose of this project is to teach you how to create your own RESTful API and Dockerize it. So the task itself is not a purpose, just exercise. 
 
-Install all the needed libraries. It's better to use `virtualenv` to keep the general `pip` clean. We are assuming you are using anaconda distribution and a 3.7+ version of python.
-So, you'll need the following packages:
-```
-SQLAlchemy
-Flask
-Flask_SQLAlchemy
-psycopg2
-```
-> **Hint:**
-Create a folder `app` that will serve as a root for your project. Create `requirements.txt` file and put there all packages from bellow - we'll use this file later. Also, you can generate requirements.txt automatically after completing the project.
-
-# Details
-
-As you already know, the main idea of the project is to develop an API for interaction with the database.
-So, we'll be able to **add/remove/update** records via API routes.
-
-> **A little spoiler for better understanding of the following material:** 
-There will be two entities in the DB: **Actor** and **Movie**, so our main task is to be able to manipulate records and relations between entities through the API.
-We'll get familiar with all the details a little bit later.
-
-Now let's dive deeper into the project components structure.
+**The project plan is as follows:**
+1. Create database and connect to it
+2. Create Models of Actors and Movies 
+3. Create methods for interaction with Models (`commit()`, `create()`, `update()` etc.)
+4. Create methods for correct processing requests and handling errors (controllers) (`get_actor_by_id()`, `add_movie()` etc.)
+5. Create routes for app corresponding to our controllers
+6. Test your app
+7. Dockerize your app
 
 ## Folder structure
 
@@ -61,7 +50,7 @@ Here is our folder structure where all main components are mentioned. For now we
 ```
 app
     ├──  models                 - this folder contains all database models.
-    │   ├── __init__.py             - init file for the package.
+    │   ├── __init__.py         - init file for the package.
     │   ├── base.py             - this file contains class Model which handles all data-management operations. Actor and Movie classes will be inherited from it.
     │   ├── actor.py            - Actor entity model.
     │   ├── movie.py            - Movie entity model.
@@ -83,30 +72,35 @@ app
     │   └── routes.py           - application routes (predefined commands).
     │ 
     │ 
-    └── run.py                  - application run file.
+    ├── run.py                  - application run file.
+    |
+    ├── Dockerfile				- commands used for Dockerization
+    |
+    └── requirements.txt		- list of libraries used for Dockerization
 ```
-> Now it's time for you to define the structure by carrying it to your local machine.
+Now it's time for you to define the structure by carrying it to your local machine.
 
 ## Main components
 
-> In this part, we're going to code a bit. I hope, you've already installed [**PyCharm**](https://www.jetbrains.com/pycharm/download/) to your machine.
-Also, you'll need to install [**Docker**](https://www.docker.com).
+**Important Notes:**
 
-### Setting up a database
+1. In order to complete this project, it's better for you to have installed [**PyCharm**](https://www.jetbrains.com/pycharm/download/)
+2. If you are student of any university cou can apply for [**JetBrains Free Educational Licenses**](https://www.jetbrains.com/community/education/#students) and get **PyCharm Professional** for free (only for the period of study)
+3. Also, you'll need to install [**Docker**](https://www.docker.com).
 
-Firstly we need to set up a database we will work with. In order to implement the project, you need to [install **Postgres**](https://www.postgresql.org/download/) locally to your machine. Also, you need to [create a user and database](https://medium.com/coding-blocks/creating-user-database-and-adding-access-on-postgresql-8bfcd2f4a91e) with the following credentials:
-```
-DB_USER = 'test_user'
-DB_PASS = 'password'
-DB_NAME = 'test_db'
-```
-Upon this you need to create environmental variable `DB_URL` which we will use to connect to the database. Pass this to your command line:
-```
-export DB_URL=postgresql+psycopg2://test_user:password@0.0.0.0:5432/test_db
-```
+### Setting up your database
+
+Firstly we need to set up a database we will work with. In order to implement the project, you need to [install **Postgres**](https://www.postgresql.org/download/) locally to your machine. 
+
+**To create your database:**
+1. Open SQL Shell 
+2. Login, setting `Server` as `localhost` and `Port` as `5432` (usually they are defaults)  
+3. `CREATE DATABASE test_db;` 
+4. `CREATE USER test_user WITH ENCRYPTED PASSWORD 'password';`
+5. `GRANT ALL PRIVILEGES ON DATABASE test_db TO test_user;`
+
 ### Models
 
-When all environmental details are handled, let's clarify entities we will use in the project.
 There are two entities: **Actor** and **Movie**. One actor can star in multiple movies, the movie's cast can consist of multiple actors. So the relation is **many-to-many**.
 You can see all properties in the schema below:
 
@@ -119,7 +113,7 @@ We need to implement **models** of these **entities**.
 As you can see, some more constants to appear here, so let's put them all to the `settings/constants.py`:
 ```python
 import os
-# connection credentials
+# db connection URL (In order to submit your project do NOT change this value!!!)
 DB_URL = os.environ['DB_URL']                                                                     
 # entities properties
 ACTOR_FIELDS = ['id', 'name', 'gender', 'date_of_birth']
@@ -128,6 +122,25 @@ MOVIE_FIELDS = ['id', 'name', 'year', 'genre']
 # date of birth format
 DATE_FORMAT = '%d.%m.%Y'
 ```
+### Little explanation:
+In order to connect your app to your database you need to get it's url.
+When Bot validates your lab, it creates environmental variable `DB_URL`. 
+So, when you will debug your project you should create it the same way.
+Put this command into the terminal in **PyCharm**:
+For Windows:
+```
+set DB_URL=postgresql+psycopg2://test_user:password@localhost:5432/test_db
+```
+For macOS and UNIX:
+```
+export DB_URL=postgresql+psycopg2://test_user:password@localhost:5432/test_db
+```
+
+So now to run your python file with respect to environmental variables you should run it from **PyCharm** terminal in such way:
+```
+python run.py
+```
+###  Associations 
 We'll use [`SQLAlchemy`](https://www.sqlalchemy.org/) toolkit to manipulate all stuff related to the DataBase (defining models, initialization of the DB, etc).
 
 Let's define an **association** table, keeping in mind that our **entities** have **relations** between each other.
@@ -140,10 +153,11 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 ```
+### Models
 Now we need to define the relations between entities. Look through the [documentation](https://docs.sqlalchemy.org/en/13/orm/basic_relationships.html) and then move to the `models/relations.py` and implement an **association table** following the instructions below:
 ```python
 from core import db
-
+from sqlalchemy import Table, Column, Integer, ForeignKey
 
 # Table name -> 'association'
 # Columns: 'actor_id' -> db.Integer, db.ForeignKey -> 'actors.id', primary_key = True
@@ -156,7 +170,7 @@ Let's try to create our first model `Actor`. Check out [documentation](https://f
 from datetime import datetime as dt
 
 from core import db
-from .relations import association
+from models.relations import association
 
 class Actor(db.Model):
     __tablename__ = 'actors'
@@ -183,7 +197,7 @@ And the same procedure for the `Movie` model. Open `models/movie.py` and complet
 from datetime import datetime as dt
 
 from core import db
-from .relations import association
+from models.relations import association
 
 
 class Movie(db.Model):
@@ -213,6 +227,8 @@ Remember that it's better to test your code. You can use **the terminal** or **J
 
 > **PYTHONPATH**
 Don't forget to add your directory to `PYTHONPATH` to allow importing from your project files:
+`set PYTHONPATH='${PYTHONPATH}:/path/to/your/project`
+Or
 `export PYTHONPATH='${PYTHONPATH}:/path/to/your/project`
 
 In order to check our models, we need to get `db` instance from `core` and initialize some dummy Flask `app`:
@@ -223,7 +239,8 @@ from datetime import datetime as dt
 
 from settings.constants import DB_URL
 from core import db
-from models import Actor, Movie
+from models.actors import Actor  
+from models.movie import Movie
 
 
 app = Flask(__name__, instance_relative_config=False)
@@ -232,7 +249,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # silence the deprecation 
 
 db.init_app(app)
 ```
-Now let's add some data to the table. We need to use `app.app_context()` to do this:
+Now let's test how it works adding some data to the table. We need to use `app.app_context()` to do this:
 ```python
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
@@ -240,7 +257,8 @@ from datetime import datetime as dt
 
 from settings.constants import DB_URL
 from core import db
-from models import Actor, Movie
+from models.actors import Actor  
+from models.movie import Movie
 
 
 app = Flask(__name__, instance_relative_config=False)
@@ -370,8 +388,8 @@ Awesome! Now we can **inherit** our **models** from this class and use its metho
     from datetime import datetime as dt
     
     from core import db
-    from .base import Model
-    from .relations import association
+	from models.base import Model  
+	from models.relations import association
     
     
     class Actor(Model, db.Model):
@@ -383,8 +401,8 @@ and `Movie`:
     from datetime import datetime as dt
     
     from core import db
-    from .base import Model
-    from .relations import association
+	from models.base import Model  
+	from models.relations import association
     
     
     class Movie(Model, db.Model):
@@ -399,7 +417,8 @@ from sqlalchemy import inspect
 
 from settings.constants import DB_URL
 from core import db
-from models import Actor, Movie
+from models.actors import Actor  
+from models.movie import Movie
 
 data = {'name': 'Megan Fox', 'gender': 'female', 'date_of_birth': dt.strptime('16.05.1986', '%d.%m.%Y').date()}
 
@@ -430,7 +449,8 @@ from sqlalchemy import inspect
 
 from settings.constants import DB_URL
 from core import db
-from models import Actor, Movie
+from models.actors import Actor  
+from models.movie import Movie
 
 
 data_actor = {'name': 'Megan Fox', 'gender': 'female', 'date_of_birth': dt.strptime('16.05.1986', '%d.%m.%Y').date()}
@@ -496,6 +516,8 @@ As we already know, **controllers** can be named as **commands handlers**. In ou
 It's better to split `Actor` and `Movie` controllers to separate files for convenience.
 Data will come to the controller from **API request**, so firstly let's define a function for parsing request data.
 Open `controllers/parse_request.py` and implement a function that **converts request data to `dict`**:
+> **Important note:**
+Make sure that you accept and parse data from the correct request field. The data will be encoded as **application/x-www-form-urlencoded**!
 ```python
 from flask import request
 
@@ -508,10 +530,38 @@ def get_request_data():
     return data
 ```
 Now we can move to `controllers/actor.py` and implement operations handlers which will deal with the requests for the `Actor` model.
-Don't forget to handle exceptions:
+Main purpose of `controllers` is not only define application operations, but handle incorrect input requests.
+Now you need to implement a few operations with appropriate error handlers:
+- **`get_all_actors()`**
+- **`get_actor_by_id():`**
+  - id should be specified
+  - id should be integer
+  - Such actor id record should exist
+- **`add_actor():`**
+   - Inputted fields should exist
+   - Among input fields should be date of birth 
+   - Date of birth should be in format `DATE_FORMAT` (find it in `settings/constants`)
+- **`update_actor():`**
+	- id should be specified
+	- id should be integer
+	- Such actor id record should exist
+   - Inputted field should exist
+   - Among inputs fields should be date of birth 
+   - Date of birth should be in format `DATE_FORMAT` (find it in `settings/constants`)
+- **`delete_actor():`**
+  - id should be specified
+  - id should be integer
+  - Such actor id record should exist
+- **`actor_add_relation():`**
+  - ids for actor and movie should be specified
+  - ids should be integer
+  - Such actor and movie ids record should exist
+- **`actor_clear_relations():`**
+  - ids for actor and movie should be specified
+  - ids should be integer
+  - Such actor and movie ids record should exist 
 
-> **Hint:**
-Use [`flask.make_response`](https://kite.com/python/docs/flask.make_response) to construct correctly formatted responses. For **correct** response use code `200`, and `400` for **bad** requests.
+Use [`flask.make_response`](https://kite.com/python/docs/flask.make_response) to construct correctly formatted responses. For **correct** response use code `200`, and `400` for **bad requests**.
 Here is a **template** for you to implement needed operations handlers (with a few completed examples as a bonus)
 ```python
 from flask import jsonify, make_response
@@ -519,7 +569,8 @@ from flask import jsonify, make_response
 from datetime import datetime as dt
 from ast import literal_eval
 
-from models import Actor, Movie
+from models.actors import Actor  
+from models.movie import Movie
 from settings.constants import ACTOR_FIELDS     # to make response pretty
 from .parse_request import get_request_data
 
@@ -632,7 +683,7 @@ def actor_clear_relations():
     ### END CODE HERE ###
 ```
 > **Important note**
-Don't forget to **test** your functions! You can just **comment** **out** the line with `get_request_data` call and pass a `dict` to the function like this:
+Don't forget to **test** your functions! You can just **comment out** the line with `get_request_data` call and pass a `dict` to the function like this:
 ```python
 def get_actor_by_id(data):
     """
@@ -673,12 +724,37 @@ def get_actor_by_id(data):
         return make_response(jsonify(error=err), 400) 
 ```
 Now it's time to implement `Movie` operations in the same way:
+- **`get_all_movies()`**
+- **`get_movie_by_id():`**
+  - id should be specified
+  - id should be integer
+  - Such movie id record should exist
+- **`add_movie():`**
+   - Inputted fields should exist
+- **`update_movie():`**
+	- id should be specified
+	- id should be integer
+	- Such movie id record should exist
+   - Inputted fields should exist
+- **`delete_movie():`**
+  - id should be specified
+  - id should be integer
+  - Such movie id record should exist
+- **`movie_add_relation():`**
+  - ids for actor and movie should be specified
+  - ids should be integer
+  - Such actor and movie ids record should exist
+- **`actor_clear_relations():`**
+  - ids for actor and movie should be specified
+  - ids should be integer
+  - Such actor and movie ids record should exist 
 ```python
 from flask import jsonify, make_response
 
 from ast import literal_eval
 
-from models import Movie, Actor
+from models.actors import Actor  
+from models.movie import Movie
 from settings.constants import MOVIE_FIELDS
 from .parse_request import get_request_data
 
@@ -747,7 +823,7 @@ We'll have following routes:
     - `POST`: add new actor, `body` can include:
         - `name, gender, date_of_birth`
     - `PUT`: update actor, `body` can include:
-        - `name, gender, date_of_birth`
+        - `id`, `name, gender, date_of_birth`
     - `DELETE`: remove actor, `body`:
         - `id`
 - `/api/movie`, to manipulate with the movies records, methods:
@@ -755,7 +831,7 @@ We'll have following routes:
     - `POST`: add new movie, `body` can include:
         - `name, year, genre`
     - `PUT`: update movie, `body` can include:
-        - `name, year, genre`
+        - `id`, `name, year, genre`
     - `DELETE`: remove movie, `body`:
         - `id`
 - `/api/actor-relations` to manipulate with actor's relations, methods:
@@ -778,14 +854,37 @@ from controllers.actor import *
 from controllers.movie import *
 
 
-@app.route('/api/actors', methods=['GET'])
-def actors():
-    """
-    Get all actors in db
-    """
-    return get_all_actors()
+@app.route('/api/actors', methods=['GET'])  
+def actors():  
+    """  
+ Get all actors in db """  
+ return get_all_actors()  
+  
+  
+@app.route('/api/movies', methods=['GET'])  
+def movies():  
+    """  
+ Get all movies in db """  
+ return get_all_movies()  
+  
+  
+@app.route('/api/actor', methods=['GET', 'POST', 'PUT', 'DELETE'])  
+def actor():  
+    ...
 
-        .  .  .
+@app.route('/api/movie', methods=['GET', 'POST', 'PUT', 'DELETE'])  
+def movie():  
+	...
+  
+  
+@app.route('/api/actor-relations', methods=['PUT', 'DELETE'])  
+def actor_relation():  
+	... 
+  
+  
+@app.route('/api/movie-relations', methods=['PUT', 'DELETE'])  
+def movie_relation():  
+	...
 ```
 Then move to `core/__init__.py` and write a function to construct your application:
 ```python
@@ -826,23 +925,168 @@ if __name__ == "__main__":
 ## **Test your app**
 
 In order to test the application, you need to run `run.py` and **debug** in case of errors.
-Then you can use some `GUI` for sending requests like [`Postman`](https://www.getpostman.com/downloads/) or `curl` requests in Python.
+Then you can use some `GUI` for sending requests like [Postman](https://www.getpostman.com/downloads/) or `curl` requests in Python.
 
-Here are examples of **correct** requests with `200` response status code:
+In case you are using Postman:
+1. Create new Workspace
+2. Put into the URL box `http://0.0.0.0:8000/route-you-want-to-test` 
+3. Choose method (GET, POST, PUT, DELETE etc.)
+4. Choose "Body" and "form-data"
+5. Put into the table keys and values you want to send to your app
+6. Click "Send"
 
+>**Example:**
+>Method: `POST` 
+	URL: `http://0.0.0.0:8000/api/actor `
+	Body: `{"name": "Megan Fox", "date_of_birth": "01.01.1970", "gender": "female"}`
 <div align="center">
     <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/docker-flask-project/figures/add-actor.png?raw=true">
-    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/docker-flask-project/figures/add-movie.png?raw=true">
-    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/docker-flask-project/figures/actors.png?raw=true">
-    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/docker-flask-project/figures/del-actor.png?raw=true">
-    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/docker-flask-project/figures/filmography.png?raw=true">
-    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/docker-flask-project/figures/del-filmography.png?raw=true">
 </div>
+
+Below will be examples of the correct operation of the app. 
+You don't have to test them all manually, but Bot will validate your app in similar way. 
+
+Here are examples of **correct** requests with **`200`** response status code:
+
+1. **Method:** `GET` 
+	**URL:** `http://0.0.0.0:8000/api/actors`
+	**Body:**`{}`	
+	
+2. **Method:** `GET` 
+	**URL:** `http://0.0.0.0:8000/api/movies`
+	**Body:**`{}`	
+3. **Method:** `POST` 
+	**URL:** `http://0.0.0.0:8000/api/actor`
+	**Body:** `{"name": "Megan Fox", "date_of_birth": "01.01.1970", "gender": "female"}`
+4. **Method:** `PUT` 
+	**URL:** `http://0.0.0.0:8000/api/actor`
+	**Body:** `{"id": 1, "name": "Megan Fox Fox"}`
+5. **Method:** `GET` 
+	**URL:** `http://0.0.0.0:8000/api/actor`
+	**Body:** `{"id": 1}`
+6. **Method:** `DELETE` 
+	**URL:** `http://0.0.0.0:8000/api/actor`
+	**Body:** `{"id": 1}`
+7. **Method:** `POST` 
+	**URL:** `http://0.0.0.0:8000/api/movie`
+	**Body:** `{"name": "Fight Club", "year": "1999", "genre": "drama"}`
+8. **Method:** `PUT` 
+	**URL:** `http://0.0.0.0:8000/api/movie`
+	**Body:** `{"id": 1, "name": "Fight Club Club"}`
+9. **Method:** `GET` 
+	**URL:** `http://0.0.0.0:8000/api/movie`
+	**Body:**`{"id": 1}`
+10. **Method:** `DELETE` 
+	**URL:** `http://0.0.0.0:8000/api/movie`
+	**Body:** `{"id": 1}`
+11. **Method:** `PUT` 
+	**URL:** `http://0.0.0.0:8000/api/actor-relations`
+	**Body:** `{"id": 1, "relation_id": "1"}`
+12. **Method:** `DELETE` 
+	**URL:** `http://0.0.0.0:8000/api/actor-relations`
+	**Body:** `{"id": 1}`
+13. **Method:** `PUT` 
+	**URL:** `http://0.0.0.0:8000/api/movie-relations`
+	**Body:** `{"id": 1, "relation_id": "1"}`
+14. **Method:** `DELETE` 
+	**URL:** `http://0.0.0.0:8000/api/movie-relations`
+	**Body:** `{"id": 1}`
+
+
+
+And here are examples of **bad request** requests with **`400`** response status code (Error message doesn't matter):
+
+1. **Method:** `POST` 
+	**URL:** `http://0.0.0.0:8000/api/actor`
+	**Body:** `{"name": "Megan Fox", "date_of_birth": "02.20.1970", "gender": "female"}`
+	**Note:** Wrong date format (20th month specified)
+2. **Method:** `POST` 
+	**URL:** `http://0.0.0.0:8000/api/actor`
+	**Body:** `{"name": "Megan Fox", "date_of_birth": "02.20.1970", "gender": "female", "height": "180"}`
+	**Note:** Wrong input field ("height")
+3.  **Method:** `POST` 
+	**URL:** `http://0.0.0.0:8000/api/movie`
+	**Body:** `{"name": "Fight Club", "year": "1999", "genre": "drama", "length": "120"}`
+	**Note:** Wrong input field ("length")
+	
+4. **Method:** `GET`  or `DELETE`
+	**URL:** `http://0.0.0.0:8000/api/actor` or `http://0.0.0.0:8000/api/movie`
+	**Body:** `{"id": "180"}`
+	**Note:** Such "id" doesn't exist
+5. **Method:** `GET`  or `DELETE`
+	**URL:** `http://0.0.0.0:8000/api/actor` or `http://0.0.0.0:8000/api/movie`
+	**Body:** `{"id": "one"}`
+	**Note:** "id" should be integer
+6.  **Method:** `GET` or `DELETE` 
+	**URL:** `http://0.0.0.0:8000/api/actor` or `http://0.0.0.0:8000/api/movie`
+	**Body:** `{}`
+	**Note:** No "id" specified
+	
+7. **Method:** `PUT` 
+	**URL:** `http://0.0.0.0:8000/api/actor`
+	**Body:** `{"id": "1", "date_of_birth": "02.20.1970"}`
+	**Note:** Wrong date format (20th month specified)
+8. **Method:** `PUT` 
+	**URL:** `http://0.0.0.0:8000/api/actor`
+	**Body:** `{"id": "1", "height": "180"}`
+	**Note:** Wrong input field ("height")
+9.  **Method:** `PUT` 
+	**URL:** `http://0.0.0.0:8000/api/movie`
+	**Body:** `{id": 1, "length": "120"}`
+	**Note:** Wrong input field ("length")
+
+10. **Method:** `PUT` 
+	**URL:** `http://0.0.0.0:8000/api/actor`
+	**Body:** `{"id": 180, "name": "Megan Fox Fox"}`
+	**Note:** Such "id" doesn't exist
+11. **Method:** `PUT` 
+	**URL:** `http://0.0.0.0:8000/api/actor`
+	**Body:** `{"id": "one", "name": "Megan Fox Fox"}` 
+	**Note:** "id" should be integer
+12. **Method:** `PUT` 
+	**URL:** `http://0.0.0.0:8000/api/actor`
+	**Body:** `{"name": "Megan Fox Fox"}`
+	**Note:** No "id" specified
+	
+13. **Method:** `PUT` 
+	**URL:** `http://0.0.0.0:8000/api/actor-relations` or `http://0.0.0.0:8000/api/movie-relations`
+	**Body:** `{"id": 180, "relation_id": 1}` or `{"id": 1, "relation_id": 180}`
+	**Note:** Such "id" doesn't exist
+14. **Method:** `PUT` 
+	**URL:** `http://0.0.0.0:8000/api/actor-relations` or `http://0.0.0.0:8000/api/movie-relations`
+	**Body:** `{"id": "one", "relation_id": 1}` or `{"id": 1, "relation_id": "one"}`
+	**Note:** "id" should be integer
+15. **Method:** `PUT` 
+	**URL:**`http://0.0.0.0:8000/api/actor-relations` or `http://0.0.0.0:8000/api/movie-relations`
+	**Body:** `{"id": 1}` or `{"relation_id": 1}`
+	**Note:** No "id" specified
+
+13. **Method:** `DELETE` 
+	**URL:** `http://0.0.0.0:8000/api/actor-relations` or `http://0.0.0.0:8000/api/movie-relations`
+	**Body:** `{"id": 180}` 
+	**Note:** Such "id" doesn't exist
+14. **Method:** `DELETE` 
+	**URL:** `http://0.0.0.0:8000/api/actor-relations` or `http://0.0.0.0:8000/api/movie-relations`
+	**Body:** `{"id": "one"}`
+	**Note:** "id" should be integer
+15. **Method:** `DELETE`  
+	**URL:**`http://0.0.0.0:8000/api/actor-relations` or `http://0.0.0.0:8000/api/movie-relations`
+	**Body:** `{}`
+	**Note:** No "id" specified
 
 
 ## Dockerize your app
 
 In this section, we'll create our own Docker container for the created application.
+So, you'll need the following packages:
+```
+SQLAlchemy
+Flask
+Flask_SQLAlchemy
+psycopg2
+```
+
+Create a folder `app` that will serve as a root for your project. Create `requirements.txt` file and put there names of packages from above  
 
 In the root of your project create a new text file and write the following commands:
 ```
@@ -860,13 +1104,16 @@ COPY . .
 CMD ["python", "./run.py"]
 ```
 Upon doing this, build the Docker image with the following command in the root of your project:
-`docker build -t <name-of-the-container> .`
-and run it:
-`docker run -p 8000:8000 <name-of-the-container>`
+`docker build -t <user-name>/<name-of-the-container>:<tag-name> .`   
+and run it:  
+`docker run --network=host --env DB_URL=postgresql+psycopg2://test_user:password@localhost/test_db -p 8000:8000 <user-name>/<name-of-the-container>:<tag-name>`
 
 Now your application is running in the docker container!
-You can test it the same way you did it earlier.
+You should test it the same way you did it earlier.
 
-To submit the project, upload the image to the [`Docker Hub`](https://hub.docker.com/), and provide its name to the `@DRU-bot`.
+To submit the project, push the image to the [**Docker Hub**](https://hub.docker.com/) using:
+`docker push <user-name>/<name-of-the-container>:<tag-name>`
+
+Then provide its name to the `@DRU Bot`.
 
 If you have any questions, write `@DRU Team` in Slack!
