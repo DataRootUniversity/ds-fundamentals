@@ -719,9 +719,6 @@ def get_actor_by_id(data):
 
         return make_response(jsonify(actor), 200)
 
-    else:
-        err = 'No id specified'
-        return make_response(jsonify(error=err), 400) 
 ```
 Now it's time to implement `Movie` operations in the same way:
 - **`get_all_movies()`**
