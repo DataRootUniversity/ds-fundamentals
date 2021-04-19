@@ -59,15 +59,15 @@ snake
     ├── settings             - here you can store different constant values, connection parameters, etc.
     │   └── constants.py     - multiple constants storage for their convenient usage.
     │
-    ├── local_validator			 	- validator for your code are stored here
-    |   ├── validator   	 		- tests core
-    |	|	├── test_constants.py	- some initial and expected constants
-    |	|	└── test_validator.py	- main test functions 
+    ├── local_validator      - validator for your code are stored here
+    |   ├── validator        - tests core
+    |	|	├── test_constants.py  - some initial and expected constants
+    |	|	└── test_validator.py  - main test functions 
     |	|
-    |	├── test_snake_step.py		- local validator for snake's step method
-    |	└── test_world.py			- local validator for world methods
-	|    
-    └── interactor.py        		- script to allow you playing Snake manually.
+    |	├── test_snake_step.py - local validator for snake's step method
+    |	└── test_world.py      - local validator for world methods
+    |    
+    └── interactor.py          - script to allow you playing Snake manually.
 ```
 
 Now define the same structure in your local file system.
@@ -99,10 +99,6 @@ class CustomEnv(gym.Env):
     ...
     return observation, reward, done, info
 
-  def reset(self):
-    ...
-    return observation  # reward, done, info can't be included
-
   def render(self, mode='human'):
     ...
 
@@ -111,7 +107,7 @@ class CustomEnv(gym.Env):
 ```
 
 In the **constructor** of the environment class, we need to define the **properties** of an `action_space` like its type and space - it contains all possible **actions** which the **agent** can take in the environment. In our case actions are `left`, `right`, `up`, and `down`. The next required parameter is `observation_space`, which stores all of the **environmental data** to be **observed** by the agent. 
-The `reset` method is dedicated to **resetting** the environment to the **initial state,** it means we need to reset the steps counter and reward score. Next is the `step` method which is for **executing** provided **action**, **calculate reward** and **return** resulting **observation**.
+Next is the `step` method which is for **executing** provided **action**, **calculate reward** and **return** resulting **observation**.
 And the last is the `render` method which is used to **render** the environment **state**. The `close` method is for closing the rendering.
 
 To make our code **simple** to read we'll hide the **backbone** of main methods in **separate files**. You'll be given the code **templates**, so your task is to **fill** in the **gaps**. But firstly let's define some **constants** we will use in the project.
@@ -122,7 +118,7 @@ To make our code **simple** to read we'll hide the **backbone** of main methods 
 **Important Notes:**
 
 1. In order to complete this project, it's better for you to have installed [**PyCharm**](https://www.jetbrains.com/pycharm/download/). To install different packages use [virtualenv](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/).
-2. If you are student of any university cou can apply for [**JetBrains Free Educational Licenses**](https://www.jetbrains.com/community/education/#students) and get **PyCharm Professional** for free (only for the period of study)
+2. If you are student of any university, you can apply for [**JetBrains Free Educational Licenses**](https://www.jetbrains.com/community/education/#students) and get **PyCharm Professional** for free (only for the period of study)
 3. (At the time of writing) if you have **Python 3.9**, when installing ***gym*** you may have version compatibility issues. To fix this you should download **Python 3.8** or older version
 ---
 ### Before we start
@@ -187,6 +183,10 @@ Let's initialize the Snake we need to set a bunch of parameters that the environ
 - head position
 - current direction
 - length
+
+**Important Note:**
+>Don't modify given methods and classes, except cases, when it's specified!
+
 
 In order to do this, we need to open the `env/core/snake.py`:
 ```python
@@ -296,41 +296,43 @@ Then run `local_validator/test_snake_step.py`
 If your Snake moves correctly and have correct types it will print your Snake movements as a response to commands
 >**Expected output:**
 
->Lets try to use your step method:
+```
+Lets try to use your step method:
 
->Your Snake initial position: [(5, 5), (5, 4), (5, 3)]
+Your Snake initial position: [(5, 5), (5, 4), (5, 3)]
 And Snake initial direction: 1
 
->Pressing RIGHT button
+Pressing RIGHT button
 Now your Snake position: [(5, 6), (5, 5), (5, 4)]
 And Snake direction: 1
 Direction didnt change
 
->Pressing LEFT button
+Pressing LEFT button
 Now your Snake position: [(5, 7), (5, 6), (5, 5)]
 And Snake direction: 1
 Direction didnt change 
 
->Pressing DOWN button
+Pressing DOWN button
 Now your Snake position: [(6, 7), (5, 7), (5, 6)]
 And Snake direction: 2
 Direction changed
 
->Pressing UP button
+Pressing UP button
 Now your Snake position: [(7, 7), (6, 7), (5, 7)]
 And Snake direction: 2
 Direction didnt change
 
->All actions were completed correctly
+All actions were completed correctly
 Well done!
+```
 
 If your code is incorrect, validator will explain your mistake 
 >**Example:**
-
->Wrong type of coordinates:
+```
+Wrong type of coordinates:
 They all should be tuples
 But you have: <class 'list'>
-
+```
 Anyway, if explanations are unclear of just if you are curious, you can figure out how it works examining validator's code. There're no magic :)
 
 >**Note:**
@@ -794,10 +796,10 @@ After filling the gaps you should test our methods
 Run `local_validator/test_world.py`
 If your methods works correctly, it will use them to create a World and Snake, then move it to the food ~~and kill it!~~
 >**Expected output:**
+```
+Checking World initialization...
 
->Checking World initialization...
-
->Your World without Snake looks like:
+Your World without Snake looks like:
 [[255. 255. 255. 255. 255. 255. 255. 255. 255. 255.]
  [255.   0.   0.   0.   0.   0.   0.   0.   0. 255.]
  [255.   0.   0.   0.   0.   0.   0.   0.   0. 255.]
@@ -809,9 +811,9 @@ If your methods works correctly, it will use them to create a World and Snake, t
  [255.   0.   0.   0.   0.   0.   0.   0.   0. 255.]
  [255. 255. 255. 255. 255. 255. 255. 255. 255. 255.]]
 
->Checking Snake movements...
+Checking Snake movements...
 
->Your World with Snake looks like:
+Your World with Snake looks like:
 [[255. 255. 255. 255. 255. 255. 255. 255. 255. 255.]
  [255.   0.   0.   0.   0.   0.   0.   0.   0. 255.]
  [255.   0.   0.   0.   0.   0.   0.   0.   0. 255.]
@@ -823,7 +825,7 @@ If your methods works correctly, it will use them to create a World and Snake, t
  [255.   0.   0.   0.   0.   0.   0.   0.   0. 255.]
  [255. 255. 255. 255. 255. 255. 255. 255. 255. 255.]]
 
->After 3 moves LEFT Snake ate the food and moves 1 DOWN
+After 3 moves LEFT Snake ate the food and moves 1 DOWN
 Now your World with Snake looks like: 
 [[255. 255. 255. 255. 255. 255. 255. 255. 255. 255.]
  [255.   0.   0.   0.   0.   0.   0.   0.   0. 255.]
@@ -836,9 +838,9 @@ Now your World with Snake looks like:
  [255.   0.   0.   0.   0.   0.   0.   0.   0. 255.]
  [255. 255. 255. 255. 255. 255. 255. 255. 255. 255.]]
 
->As you can see, Snake grew up for a 1 block
+As you can see, Snake grew up for a 1 block
 
->And after 1 move LEFT Snake died:
+And after 1 move LEFT Snake died:
 [[255. 255. 255. 255. 255. 255. 255. 255. 255. 255.]
  [255.   0.   0.   0.   0.   0.   0.   0.   0. 255.]
  [255.   0.   0.   0.   0.   0.   0.   0.   0. 255.]
@@ -850,14 +852,14 @@ Now your World with Snake looks like:
  [255.   0.   0.   0.   0.   0.   0.   0.   0. 255.]
  [255. 255. 255. 255. 255. 255. 255. 255. 255. 255.]]
 
->All actions were completed correctly
+All actions were completed correctly
 Well done!
-
+```
 If your code works incorrectly, validator will explain your mistake
 >**Example:**
-
->Snake didnt die eating itself
-
+```
+Snake didnt die eating itself
+```
 And as always, if explanations are unclear, you can examine validator's test cases by yourself
 
 Fantastic! We finished with the main elements of the environment, and now we need to implement the renderer of the environment.
@@ -1020,19 +1022,6 @@ class SnakeEnv(gym.Env):
          
         return self.world.get_observation(), reward, done, snake
 
-    def reset(self,):
-        """
-        Reset environment to the initial state
-        @return: initial observation
-        """
-        # Reset step counters
-
-        # Set 'alive' flag
-        
-        # Create new world
-        self.world =
-        return self.world.get_observation()
-
     def render(self, mode='human', close=False):
         """
         Render environment depending on the mode
@@ -1154,8 +1143,8 @@ snake.zip
     |	|	└── test_validator.py	
     |	|
     |	├── test_snake_step.py		
-    |	└── test_world.py			
-	|    
+    |	└── test_world.py
+    |    
     └── interactor.py        
 ```
 
