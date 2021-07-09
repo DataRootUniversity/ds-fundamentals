@@ -1,4 +1,5 @@
-﻿# RESTful APIs Project Guide
+﻿
+# RESTful APIs Project Guide
 
 *Hello and welcome to the **RESTful APIs Project** tutorial! Today you'll learn how to **structure** your project and **develop** your own **web API**.*
 
@@ -239,7 +240,7 @@ from datetime import datetime as dt
 
 from settings.constants import DB_URL
 from core import db
-from models.actors import Actor  
+from models.actor import Actor  
 from models.movie import Movie
 
 
@@ -257,7 +258,7 @@ from datetime import datetime as dt
 
 from settings.constants import DB_URL
 from core import db
-from models.actors import Actor  
+from models.actor import Actor  
 from models.movie import Movie
 
 
@@ -284,7 +285,7 @@ Here is an example of the output:
     <img align="center" width="706" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/docker-flask-project/figures/add-actor-raw.png?raw=true">
 </div>
 
-Also, we recommend that you look through the **documentation** and **test other operations** (delete record, add relations, remove relations, etc) in the same way.
+>**Important Note:** If recording about "Megan Fox" is already exist and you try to rewrite it, you receive the error
 
 Great! Our models are done. It's time to move on to the more interesting part - **handling of data manipulating operations.**
 As you can see, operations are the same for both of our models. We need to be able to:
@@ -385,28 +386,28 @@ class Model(object):
 ```
 Awesome! Now we can **inherit** our **models** from this class and use its methods as **class methods** of `Actor` and `Movie`! Let's add this feature to `Actor`:
 ```python
-    from datetime import datetime as dt
-    
-    from core import db
-	from models.base import Model  
-	from models.relations import association
-    
-    
-    class Actor(Model, db.Model):
-        . . .
+ from datetime import datetime as dt
+ 
+ from core import db
+ from models.base import Model
+ from models.relations import association
+ 
+ 
+ class Actor(Model, db.Model):
+     . . .
 ```
 
 and `Movie`:
 ```python
-    from datetime import datetime as dt
-    
-    from core import db
-	from models.base import Model  
-	from models.relations import association
-    
-    
-    class Movie(Model, db.Model):
-        . . .
+from datetime import datetime as dt
+
+from core import db
+from models.base import Model  
+from models.relations import association
+
+
+class Movie(Model, db.Model):
+    . . .
 ```
 Let's test this by repeating the previous test operation but using class method `create`:
 ```python
@@ -417,7 +418,7 @@ from sqlalchemy import inspect
 
 from settings.constants import DB_URL
 from core import db
-from models.actors import Actor  
+from models.actor import Actor  
 from models.movie import Movie
 
 data = {'name': 'Megan Fox', 'gender': 'female', 'date_of_birth': dt.strptime('16.05.1986', '%d.%m.%Y').date()}
@@ -449,7 +450,7 @@ from sqlalchemy import inspect
 
 from settings.constants import DB_URL
 from core import db
-from models.actors import Actor  
+from models.actor import Actor  
 from models.movie import Movie
 
 
@@ -539,8 +540,7 @@ Now you need to implement a few operations with appropriate error handlers:
   - Such actor id record should exist
 - **`add_actor():`**
    - Inputted fields should exist
-   - Among input fields should be date of birth 
-   - Date of birth should be in format `DATE_FORMAT` (find it in `settings/constants`)
+   - If date of birth is listed among the input fields, it should be in format `DATE_FORMAT` (find it in `settings/constants`)
 - **`update_actor():`**
 	- id should be specified
 	- id should be integer
@@ -557,9 +557,9 @@ Now you need to implement a few operations with appropriate error handlers:
   - ids should be integer
   - Such actor and movie ids record should exist
 - **`actor_clear_relations():`**
-  - ids for actor and movie should be specified
-  - ids should be integer
-  - Such actor and movie ids record should exist 
+	- id should be specified
+	- id should be integer
+	- Such actor id record should exist
 
 Use [`flask.make_response`](https://kite.com/python/docs/flask.make_response) to construct correctly formatted responses. For **correct** response use code `200`, and `400` for **bad requests**.
 Here is a **template** for you to implement needed operations handlers (with a few completed examples as a bonus)
@@ -569,7 +569,7 @@ from flask import jsonify, make_response
 from datetime import datetime as dt
 from ast import literal_eval
 
-from models.actors import Actor  
+from models.actor import Actor  
 from models.movie import Movie
 from settings.constants import ACTOR_FIELDS     # to make response pretty
 from .parse_request import get_request_data
@@ -728,6 +728,7 @@ Now it's time to implement `Movie` operations in the same way:
   - Such movie id record should exist
 - **`add_movie():`**
    - Inputted fields should exist
+   - Year should be integer
 - **`update_movie():`**
 	- id should be specified
 	- id should be integer
@@ -742,15 +743,15 @@ Now it's time to implement `Movie` operations in the same way:
   - ids should be integer
   - Such actor and movie ids record should exist
 - **`actor_clear_relations():`**
-  - ids for actor and movie should be specified
-  - ids should be integer
-  - Such actor and movie ids record should exist 
+	- id should be specified
+	- id should be integer
+	- Such movie id record should exist
 ```python
 from flask import jsonify, make_response
 
 from ast import literal_eval
 
-from models.actors import Actor  
+from models.actor import Actor  
 from models.movie import Movie
 from settings.constants import MOVIE_FIELDS
 from .parse_request import get_request_data
@@ -854,14 +855,16 @@ from controllers.movie import *
 @app.route('/api/actors', methods=['GET'])  
 def actors():  
     """  
- Get all actors in db """  
+ Get all actors in db 
+	"""  
  return get_all_actors()  
   
   
 @app.route('/api/movies', methods=['GET'])  
 def movies():  
     """  
- Get all movies in db """  
+ Get all movies in db 
+	"""  
  return get_all_movies()  
   
   
