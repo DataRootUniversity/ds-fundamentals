@@ -451,7 +451,7 @@ Let's consider the parts which are needed to check your project.
 
 ### Specifications
 
-[**Here**](Specifications_guide.md) you will find a complete guide to filling `specifications.json`
+[**Here**](Specifications_DOC.md) you will find a complete guide to filling `specifications.json`
 Read it carefully and follow all given instructions
 
 For automatic project checking, we have set some limitations to the data preprocessing module and defined a bunch of operations allowed to perform on data. To check the correction of your data preprocessing operations we created our own correct implementation of all necessary operation. So at each data preprocessing step we run your implementation and proper one and then we compare the results. 
