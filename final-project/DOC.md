@@ -23,13 +23,13 @@ We will consider such stages as:
 
 - **Feature Engineering & Data Preprocessing**
 - **Model Selection, Training and Saving**
-- **Bonus:** a Little Web API
+- **Creating a small Web API (as bonus)**
 
 By working with the data from [Kaggle's Titanic competition](https://www.kaggle.com/c/titanic), we will go through all stages of the ML project development.
 
 **After reading this tutorial your tasks will be:**
 
-- setting **any task you like** to solve it using ML (classification, regression, etc.)(you can come up with it by yourself or choose a task from Kaggle. **Don't try to submit the code from this guide - it's just example of the project, and it won't pass the tests**) 
+- setting **any task you like** to solve it using ML (classification, regression, etc.). You can come up with it by yourself or choose a task from Kaggle. **Don't try to submit the code from this guide :)**
 - finding a dataset, which fits your task
 - implementing a data preprocessing module
 - choosing, training, and saving the model
@@ -38,6 +38,20 @@ By working with the data from [Kaggle's Titanic competition](https://www.kaggle.
 
 > **Important note:**
 Size of your train set must be from **600** to **20000** examples, size of the validation set must be between **100** and **10000**.
+
+You are allowed to choose any dataset you want.
+However, we found **10 datasets, that we've tested and recommend to use** for your project:
+
+1.[https://www.kaggle.com/sakshigoyal7/credit-card-customers](https://www.kaggle.com/sakshigoyal7/credit-card-customers)  
+2.[https://www.kaggle.com/jsphyg/weather-dataset-rattle-package](https://www.kaggle.com/jsphyg/weather-dataset-rattle-package)  
+3.[https://www.kaggle.com/anmolkumar/health-insurance-cross-sell-prediction](https://www.kaggle.com/anmolkumar/health-insurance-cross-sell-prediction)  
+4.[https://www.kaggle.com/fedesoriano/stroke-prediction-dataset](https://www.kaggle.com/fedesoriano/stroke-prediction-dataset)  
+5.[https://www.kaggle.com/dansbecker/melbourne-housing-snapshot](https://www.kaggle.com/dansbecker/melbourne-housing-snapshot)  
+6.[https://www.kaggle.com/CooperUnion/cardataset](https://www.kaggle.com/CooperUnion/cardataset)  
+7.[https://www.kaggle.com/marcopale/housing](https://www.kaggle.com/marcopale/housing)  
+8.[https://www.kaggle.com/c/house-prices-advanced-regression-techniques](https://www.kaggle.com/c/house-prices-advanced-regression-techniques)  
+9.[https://www.kaggle.com/iliassekkaf/computerparts](https://www.kaggle.com/iliassekkaf/computerparts)  
+10.[https://www.kaggle.com/harlfoxem/housesalesprediction](https://www.kaggle.com/harlfoxem/housesalesprediction)
 
 
 ## Project Structure
@@ -62,141 +76,21 @@ app
     │ 
     ├── app.py                      - route, app.
     │
-    ├── requirements.txt
+    ├── requirements.txt			- list of libraries used for Dockerization 
     │
-    └── Dockerfile
+    └── Dockerfile					- commands used for Dockerization
 ```
-
-> **Important note:**
-You have to define the same structure for your project.
+You have to define the same structure for your project
 
 ## Feature Engineering & Data Preprocessing
 
 These two stages are usually the **most important** and difficult in the development of Data Science projects and may take up to **80%** of the project development time. To perform data preprocessing, you need to **"feel"** the data - that is understanding the meaning of all features in the dataset, exploring and knowing all relations between them, etc. To learn more about the role of Data Preprocessing, read [**here**](https://hackernoon.com/what-steps-should-one-take-while-doing-data-preprocessing-502c993e1caa). 
 
-Our aim now is to get acquainted with the data.
+>**Important Note:**
+>Further we will use train.csv and val.csv, but they are not exactly train.csv and test.csv from [Kaggle's Titanic competition](https://www.kaggle.com/c/titanic)
+>Both our train.csv and val.csv contains target value "Survived" (but test.csv from competition don't). Take this into account when doing your project
+>So just split train.csv from the competition into train.csv and val.csv in a ratio of 80/20 and download them
 
-> **Important note:
-For** automatic project checking, we have set some limitations to the data preprocessing module and defined a bunch of operations allowed to perform on data. To check the correction of your data preprocessing operations we created our own correct implementation of all necessary operation. So at each data preprocessiong step we run your implementation and proper one and then we compare the results. 
->To check the correction of your data preprocessing operations we created our own correct implementation of all necessary operation. So at each data preprocessiong step we run your implementation and proper one and then we compare the results. That is why after completing the project, you'll need to create `specifications.json` where you'll describe all operations you've performed on the data, so we will be able to reproduce them with our implementation.
-> Here is the list of all operations and their parameters:
-
-```
-{
-    // handling outliers in different ways
-    "handle_outliers":[
-        "in_columns", // input column name(type: list[str]) 
-        "modes",  // mode of handling outliers: `drop`, `cap` (type: list[str])
-        "methods", // methods of handling outliers: `std`, `percentile` (type: list[str])
-        "factors", // factor value in case using `std` (type: list[float])
-        "upper_quantiles", // in case using `percentile` (type: list[float])
-        "lower_quantiles"  // in case using `percentile` (type: list[float])
-    ],
-        // filling Nans in different ways
-    "fill_nans":[
-        "in_columns", // input column names (type: list[str]) 
-        "methods", // methods of filling Nans (type: list[str]): 
-                                        // `zero` - fill Nans with 0
-                                        // `mean` - fill Nans with column mean
-                                        // `mode` - fill Nans with column mode
-                                        // `median` - fill Nans with column median
-                                        // `custom` - fill Nans with custom value
-                                        // `random` - fill Nans with random values in range (avg - std, avg + std) for numeric column type, random column values for string column type
-        "custom_values" // custom values for filling Nans (type: dict[str:int/float]) 
-    ],
-        // split column values on bins inplace or by adding new column with name 'in_column_categorical'
-    "bins":[
-        "in_columns", // input column name (type: list[str]) 
-        "bins_nums", // number of bins (type: list(int))
-        "methods", // method of splitting (type: list[str]): `cut`, `qcut`, `condition` 
-        "conditions", // conditions for case of using `condition` method (type: list[str])
-        "choices", // choices for case of using `condition` method (type: list[str])
-        "defaults", // default value (type: list[any type])
-        "inplaces" // change `in_columns[i]` of add new column `in_column[i]_categorical` (type: list(bool))
-    ],
-        // replace values in column depending on values in other column
-    "replace":[
-        "in_columns", // input column name (dependent column)(type: list[str]) 
-        "old_values", // value to replace (type: list[list/int/float/str])
-        "new_values", // new value (type: list[int/float/str])
-        "condition_columns", // condition column (independent column)(type: list[str]) 
-        "conditions", // condition (type: list[str]): `equal`, `greater`, `lower`, `gte`, `lte`
-        "condition_values", // condition value (type: list[int/float])
-        "defaults", // default value (type: list[int/float/str])
-        "inplaces" // (type: list[bool]) if inplace: replace `in_column` values, else: create `in_column` with `default` value   
-    ],
-        // combine columns in different ways
-    "columns_combination":[
-        "in_columns_list", // input columns names (type: list[list, len = 2])
-        "out_columns", // output column name (type: list[str]) 
-        "methods", // combination method for numeric values (type: list[str]): 
-                                        // `addition` - add columns values
-                                        // `subtraction` - substract columns values (`in_columns[0]` - `in_columns[1]`)
-                                        // `multiplication` - multiply columns values
-                                        // `division` - divide `in_columns[0]` values on `in_columns[1]` values
-        "coefficients_list", // columns values coefficients (type: list[list[int/float], len = 2]))
-        "biases" // bias value (type: list[int/float])
-    ],
-        // dates processing: transforms date column into `column_name_year`, 
-                                                      // `column_name_month`, 
-                                                      // `column_name_weekday`, 
-                                                      // `column_name_doy` 
-        // if the column is `timestamp` it'll also return `column_name_time`,
-                                                       // `column_name_doy_sin`,
-                                                       // `column_name_doy_cos`
-    "process_dates":[
-        "in_columns", // input column name (type: list[str]) 
-        "date_formats", // format of date values in column (type: list[str]), e.g. '%d.%m.%Y' is for '01.01.2020' 
-        "timestamps" // timestamp flag (type: list[bool])
-    ],
-        // applying regex to string values 
-    "apply_regex":[
-        "in_columns", // input column name (type: list[str]) 
-        "out_columns", // output column name (type: list[str])
-        "methods", // regex method (type: list[str]):
-                                 // `search`
-                                 // `split`
-                                 // `sub`
-        "patterns", // regex pattern (type: list[str])
-        "inplaces", // change `in_column` or create `out_column` (type: list(bool)) 
-        "maxsplits", // `maxsplit` arg for `re.split` (type: list(int))
-        "rep_values", // replacement value for `re.sub` (type: list(str))
-        "counts", // `count` argument `re.sub` (type: list(int))
-        "indexes", // (type: list)
-        "groups" // (type: list[int])
-    ],
-        // logarithm transformation
-    "log_transform":[
-        "in_columns" // input columns names (type: list of strings)
-    ],
-        // normalization (or min-max normalization) scale all values in a fixed range between 0 and 1
-    "normalize":[
-        "in_columns" // input columns names (type: list of strings)
-    ],
-        // z-score standardization
-    "standardize":[
-        "in_columns" // input columns names (type: list of strings)
-    ],
-        // drop specific columns 
-     "drop_columns":[
-        "in_columns" // input columns names (type: list of strings)
-    ],
-        // drop all columns except specified
-    "select_columns":[
-        "in_columns" // input columns names (type: list of strings)
-    ],
-        // apply label encoder to specified columns
-    "encode_labels":[
-         "in_columns" // input columns names (type: list of strings)
-     ],
-        // apply one-hot-encoding to specified columns
-    "one_hot_encode":[
-        "in_columns" // input columns names (type: list of strings)
-                     // output categorical columns names will contain prefix 'category_' 
-                     // (for example value 'feature_1' after one-hot encoding will be converted into column 'category_feature_1')
-    ]
-}
-```
 Now let's get to practice and define some constants:
 
 `settings/constants.py`
@@ -214,7 +108,7 @@ import numpy as np
 import pandas as pd
 import re as re
 
-from settings import 
+from settings.constants import TRAIN_CSV, VAL_CSV 
 
 train = pd.read_csv(TRAIN_CSV, header = 0, dtype={'Age': np.float64})
 val  = pd.read_csv(VAL_CSV , header = 0, dtype={'Age': np.float64})
@@ -222,8 +116,9 @@ full_data = [train, val]
 
 train.head()
 ```
+
 <div align="center">
-    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/final-project/figures/train-head.png?raw=true">
+    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/final-project/figures/train_overview.jpg?raw=true">
 </div>
 
 The **target value** is the **`Survived`** column and other columns are the **features,** so our task is to **predict** surviving of the passenger depending on his **features**. ****To perform correct **Data Preprocessing,** we need to consider all the **features** and find out their **implications** on the dataset.
@@ -240,13 +135,15 @@ train[['Pclass', 'Survived']].groupby(['Pclass'], as_index = False).mean()
 
 We can see, that passengers, who traveled first-class had more chances to survive.
 
-**`Gender:`** 
+**`Sex:`** 
 ```python
-train[["Gender", "Survived"]].groupby(['Gender'], as_index = False).mean()
+train[["Sex", "Survived"]].groupby(['Sex'], as_index = False).mean()
 ```
+
 <div align="center">
-    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/final-project/figures/gender.png?raw=true">
+    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/final-project/figures/sex_survived.jpg?raw=true">
 </div>
+
 
 Women had many more chances to survive on Titanic (seems like James Cameron knew about the statistics ;) )
 
@@ -263,7 +160,7 @@ It seems to have a good effect on our prediction, but let's go further and **cat
 
 ```python
 train['IsAlone'] = 0
-train.loc[dataset['FamilySize'] == 1, 'IsAlone'] = 1
+train.loc[train['FamilySize'] == 1, 'IsAlone'] = 1
 train[['IsAlone', 'Survived']].groupby(['IsAlone'], as_index=False).mean()
 ```
 <div align="center">
@@ -295,12 +192,12 @@ As we can see, passengers with the cheapest tickets had almost no chance to surv
 
 **`Age:`** we have plenty of missing values in this feature. Let's generate random numbers between (mean - std) and (mean + std) to fill Nans, then we will categorize age into 5 range:
 ```python
-age_avg        = train['Age'].mean()
-age_std        = train['Age'].std()    
+age_avg = train['Age'].mean()
+age_std = train['Age'].std()    
 age_null_count = train['Age'].isnull().sum()
     
 age_null_random_list = np.random.randint(age_avg - age_std, age_avg + age_std, size = age_null_count)
-train['Age'][np.isnan(dataset['Age'])] = age_null_random_list
+train['Age'][np.isnan(train['Age'])] = age_null_random_list
 train['Age'] = train['Age'].astype(int)
     
 train['CategoricalAge'] = pd.cut(train['Age'], 5)
@@ -326,10 +223,12 @@ train['Title'] = train['Name'].apply(get_title)
 
 pd.crosstab(train['Title'], train['Sex'])
 ```
-<div align="center">
-    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/final-project/figures/raw-title.png?raw=true">
-</div>
 
+<div align="center">
+    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/final-project/figures/get_title.jpg?raw=true">
+</div>      
+
+    
 Now that we have titles, let's categorize them and check the title impact on survival rate.
 ```python
 train['Title'] = train['Title'].replace(['Lady', 'Countess','Capt', 'Col',\
@@ -354,44 +253,32 @@ Let's process the data taking into the account the insights we got from Feature 
 Now we will define processing operations and their descriptions regarding mentioned possible operations, which we will use in `specifications.json`:
 
 **1. columns combinations:**
-
-`code`:
 ```python
 train['FamilySize'] = train['SibSp'] + train['Parch'] + 1
 ```
 
 **2. replace value**
-
-`code`:
 ```python
 train['IsAlone'] = 0
 train.loc[train['FamilySize'] == 1, 'IsAlone'] = 1
 ```
 
 **3. fill Nan with mode**
-
-`code`:
 ```python
 train['Embarked'] = train['Embarked'].fillna(train['Embarked'].mode()[0])
 ```
 
 **4. fill Nan with median**
-
-`code`:
 ```python
 train['Fare'] = train['Fare'].fillna(train['Fare'].median())
 ```
 
 **5. binning with qcut**
-
-`code`:
 ```python
 train['Fare'] = pd.qcut(train['Fare'], 4)
 ```
 
 **6. fill Nan with values from random distribution**
-
-`code`:
 ```python
 age_avg = train['Age'].mean()
 age_std = train['Age'].std()
@@ -402,22 +289,17 @@ train['Age'][np.isnan(train['Age'])] = age_null_random_list
 ```
 
 **7. binning with cut**
-
-`code`:
 ```python
 train['Age'] = pd.cut(train['Age'], 5)
 ```
 
 **8. apply regex**
-
-`code` (using previously mentioned `get_title` function):
+using previously mentioned `get_title` function:
 ```python
 train['Title'] = train['Name'].apply(get_title)
 ```
 
 **9. replace value**
-
-`code`:
 ```python
 train['Title'] = train['Title'].replace(['Lady', 'Countess', 'Capt', 'Col', 'Don', 'Dr',
                                         'Major', 'Rev', 'Sir', 'Jonkheer', 'Dona'],
@@ -425,29 +307,21 @@ train['Title'] = train['Title'].replace(['Lady', 'Countess', 'Capt', 'Col', 'Don
 ```
 
 **10. replace value**
-
-`code`:
 ```python
-    train['Title'] = train['Title'].replace(['Mlle', 'Ms'], 'Miss')
+train['Title'] = train['Title'].replace(['Mlle', 'Ms'], 'Miss')
 ```
 
 **11. replace value**
-
-`code`:
 ```python
-    train['Title'] = train['Title'].replace('Mme', 'Mrs')
+train['Title'] = train['Title'].replace('Mme', 'Mrs')
 ```
 
 **12. fill Nans with 0**
-
-`code`:
 ```python
-    train['Title'] = train['Title'].fillna(0)
+train['Title'] = train['Title'].fillna(0)
 ```
 
 **13. drop columns**
-
-`code`:
 ```python
 drop_elements = ['PassengerId', 'Name', 'Ticket', 'Cabin', 
                  'SibSp', 'Parch', 'FamilySize']
@@ -455,29 +329,26 @@ train = train.drop(drop_elements, axis=1)
 ```
 
 **14. encode labels**
-
-`code`:
 ```python
-    from sklearn.preprocessing import LabelEncoder
-    
-    # encode labels
-    le = LabelEncoder()
-    
-    le.fit(self.dataset['Sex'])
-    self.dataset['Sex'] = le.transform(self.dataset['Sex'])
-    
-    
-    le.fit(self.dataset['Title'])
-    self.dataset['Title'] = le.transform(self.dataset['Title'])
-    
-    le.fit(self.dataset['Embarked'].values)
-    self.dataset['Embarked'] = le.transform(self.dataset['Embarked'].values)
-    
-    le.fit(self.dataset['Fare'])
-    self.dataset['Fare'] = le.transform(self.dataset['Fare'])
-    
-    le.fit(self.dataset['Age'])
-    self.dataset['Age'] = le.transform(self.dataset['Age'])
+from sklearn.preprocessing import LabelEncoder
+
+# encode labels
+le = LabelEncoder()
+
+le.fit(train['Sex'])
+train['Sex'] = le.transform(train['Sex'])
+
+le.fit(train['Title'])
+train['Title'] = le.transform(train['Title'])
+
+le.fit(train['Embarked'].values)
+train['Embarked'] = le.transform(train['Embarked'].values)
+
+le.fit(train['Fare'])
+train['Fare'] = le.transform(train['Fare'])
+
+le.fit(train['Age'])
+train['Age'] = le.transform(train['Age'])
 ```
 
 Great! Now that we have defined all preprocessing operations, let's gather them under the `Dataloader` class:
@@ -573,15 +444,24 @@ class DataLoader(object):
 That's how the data looks like after preprocessing:
 
 <div align="center">
-    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/final-project/figures/processe-data.png?raw=true">
+    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/final-project/figures/preprocessed_train.jpg?raw=true">
 </div>
 
 Let's consider the parts which are needed to check your project. 
 
-> **Important note:**
-Note, that you can pass a list of columns names and other parameters to each operation, so think about the correct order of operations to opimize their quantity in `specifications.json`.  
+### Specifications
 
-Here is the final look of the `settings/specifications.json`:
+[**Here**](Specifications_guide.md) you will find a complete guide to filling `specifications.json`
+Read it carefully and follow all given instructions
+
+For automatic project checking, we have set some limitations to the data preprocessing module and defined a bunch of operations allowed to perform on data. To check the correction of your data preprocessing operations we created our own correct implementation of all necessary operation. So at each data preprocessing step we run your implementation and proper one and then we compare the results. 
+
+That is why after completing the dataloader, you'll need to create `specifications.json` where you'll describe all operations you've performed on the data, so we will be able to reproduce them with our implementation.
+
+> **Important note:**
+Note, that you can pass a list of columns names and other parameters to each operation, so think about the correct order of operations to opimize their quantity
+
+For our DataLoader is the final look of the `settings/specifications.json`:
 ```
 {
     "description":{
@@ -589,7 +469,7 @@ Here is the final look of the `settings/specifications.json`:
             "PassengerId",
             "Pclass",
             "Name",
-            "Gender",
+            "Sex",
             "Age",
             "SibSp",
             "Parch",
@@ -599,7 +479,7 @@ Here is the final look of the `settings/specifications.json`:
             "Embarked"
         ],
         "final_columns":[
-                    "Gender",
+                    "Sex",
                     "Title",
                     "Embarked",
                     "Fare",
@@ -791,7 +671,7 @@ Here is the final look of the `settings/specifications.json`:
             "operation_name":"encode_labels",
             "params":{
                 "in_columns":[
-                    "Gender",
+                    "Sex",
                     "Title",
                     "Embarked",
                     "Fare",
@@ -875,6 +755,18 @@ class Dataset:
 
 ## Model Selection, Training and Saving
 
+Firstly, let's load our data:
+```python
+from utils.dataloader import DataLoader
+
+X_raw = train.drop("Survived", axis=1)
+
+loader = DataLoader()
+loader.fit(X_raw)
+X = loader.load_data()
+y = train["Survived"]
+```
+
 To solve our task, we need to choose an estimator that will classify the data. Let's take a bunch of estimators, train them and compare the results (here we used **accuracy score**):
 
 ```python
@@ -909,14 +801,11 @@ log = pd.DataFrame(columns=log_cols)
 
 sss = StratifiedShuffleSplit(n_splits=10, test_size=0.1, random_state=0)
 
-X = train[0::, 1::]
-y = train[0::, 0]
-
 acc_dict = {}
 
 for train_index, test_index in sss.split(X, y):
-    X_train, X_test = X[train_index], X[test_index]
-    y_train, y_test = y[train_index], y[test_index]
+    X_train, X_test = X.iloc[train_index], X.iloc[test_index]
+    y_train, y_test = y.iloc[train_index], y.iloc[test_index]
     
     for clf in classifiers:
         name = clf.__class__.__name__
@@ -939,11 +828,16 @@ plt.title('Classifier Accuracy')
 
 sns.set_color_codes("muted")
 sns.barplot(x = 'Accuracy', y = 'Classifier', data = log, color = "b")
+log
 ```
 Here are the result of each model:
 
 <div align="center">
-    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/final-project/figures/estimators.png?raw=true">
+    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/final-project/figures/accurancy_log.jpg?raw=true">
+</div>
+
+<div align="center">
+    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/final-project/figures/fare.png?raw=true">
 </div>
 
 We can see that `SVC` shows the best results: accuracy score is `0.82` on the validation set.
@@ -956,7 +850,7 @@ import pandas as pd
 from sklearn.svm import SVC
 
 from utils.dataloader import DataLoader 
-from settings. constants import TRAIN_CSV
+from settings.constants import TRAIN_CSV
 
 
 with open('settings/specifications.json') as f:
@@ -966,10 +860,10 @@ raw_train = pd.read_csv(TRAIN_CSV)
 x_columns = specifications['description']['X']
 y_column = specifications['description']['y']
 
-x_raw = raw_train[x_columns]
+X_raw = raw_train[x_columns]
 
 loader = DataLoader()
-loader.fit(x_raw)
+loader.fit(X_raw)
 X = loader.load_data()
 y = raw_train.Survived
 
@@ -1164,8 +1058,15 @@ COPY . .
 
 CMD ["python", "./app.py"]
 ```
-Upload the image to the [Docker Hub](https://hub.docker.com/), submit your project, and that's it.
+Build the image using:
 
+`docker build -t <user-name>/<name-of-the-container>:<tag-name> .`
+
+Then push it to the [Docker Hub](https://hub.docker.com/):
+
+`docker push <user-name>/<name-of-the-container>:<tag-name>`
+
+And submit your project with `<user-name>/<name-of-the-container>:<tag-name>`
 Now it's time to come up with a task and data, and implement all the steps from the tutorial for your own project. Good luck, have fun!       
 
 If you have any questions, write `@DRU Team` in Slack!
