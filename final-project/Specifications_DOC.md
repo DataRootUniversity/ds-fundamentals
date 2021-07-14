@@ -952,7 +952,7 @@ Operation keys:
 
 ## Cheat sheet
 Here is all description are concentrated in one place:
-```json
+```
 { 
     // handling outliers in different ways
     "handle_outliers":[
