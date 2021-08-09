@@ -412,7 +412,7 @@ class World(object):
         self.FOOD = FOOD_BLOCK
         self.WALL = WALL
         self.DIRECTIONS = DIRECTIONS
-        # Init a numpy matrix with zeros of predefined size - that will be the initial World
+        # Init a numpy ndarray with zeros of predefined size - that will be the initial World
         self.size = size
         self.world = 
         # Fill in the indexes gaps to add walls along the World's boundaries
@@ -474,7 +474,7 @@ class World(object):
         self.FOOD = FOOD_BLOCK
         self.WALL = WALL
         self.DIRECTIONS = DIRECTIONS
-        # Init a numpy matrix with zeros of predefined size
+        # Init a numpy ndarray with zeros of predefined size - that will be the initial World
         self.size = size
         self.world = 
         # Fill in the indexes gaps to add walls along the World's boundaries
@@ -573,7 +573,7 @@ class World(object):
         self.FOOD = FOOD_BLOCK
         self.WALL = WALL
         self.DIRECTIONS = DIRECTIONS
-        # Init a numpy matrix with zeros of predefined size
+        # Init a numpy ndarray with zeros of predefined size - that will be the initial World
         self.size = size
         self.world = 
         # Fill in the indexes gaps to add walls along the World's boundaries
@@ -680,7 +680,7 @@ class World(object):
         self.FOOD = FOOD_BLOCK
         self.WALL = WALL
         self.DIRECTIONS = DIRECTIONS
-        # Init a numpy matrix with zeros of predefined size
+        # Init a numpy ndarray with zeros of predefined size - that will be the initial World
         self.size = size
         self.world = 
         # Fill in the indexes gaps to add walls along the World's boundaries
@@ -775,7 +775,7 @@ class World(object):
                 # Remove old food
                 
                 # Add tail again
-                # Note: all Snake coordinates should be tuples(Y, X)
+                # Note: all Snake coordinates should be tuples(X, Y)
                 
                 # Request to place new food
                 new_food_needed = 
