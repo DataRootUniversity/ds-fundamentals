@@ -290,7 +290,7 @@ class Snake:
 **Let's test it right now!**
 
 To avoid misunderstandings and write code correctly in the future, you should play around with your code and test it in different ways. 
-Download [local_validator](https://dru-bot.s3.eu-central-1.amazonaws.com/local_snake_validator.zip) and put it into the root of your project ([Project Structure](#project-structure))
+Download [local_validator](https://dru-bot.s3.eu-central-1.amazonaws.com/local_validator.zip) and put it into the root of your project ([Project Structure](#project-structure))
 
 Then run `local_validator/test_snake_step.py`
 If your Snake moves correctly and have correct types it will print your Snake movements as a response to commands
