@@ -712,7 +712,7 @@ And new columns appear:
     "operation_number":1,
     "operation_name":"process_dates",
     "params":{
-        "in_columns_list":[
+        "in_columns":[
             "date"
         ],
         "date_formats":[
@@ -797,7 +797,7 @@ After applying `"log_transform"`:
     "operation_number":1,
     "operation_name":"log_transform",
     "params":{
-        "in_columns_list":[
+        "in_columns":[
             "Fare"
         ]
     }
@@ -830,7 +830,7 @@ After applying `"normalize"`:
     "operation_number":1,
     "operation_name":"normalize",
     "params":{
-        "in_columns_list":[
+        "in_columns":[
             "Fare"
         ]
     }
@@ -863,7 +863,7 @@ After applying `"standardize"`:
     "operation_number":1,
     "operation_name":"standardize",
     "params":{
-        "in_columns_list":[
+        "in_columns":[
             "Fare"
         ]
     }
