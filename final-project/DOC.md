@@ -424,8 +424,8 @@ class DataLoader(object):
         # encode labels
         le = LabelEncoder()
 
-        le.fit(self.dataset['Gender'])
-        self.dataset['Gender'] = le.transform(self.dataset['Gender'])
+        le.fit(self.dataset['Sex'])
+        self.dataset['Sex'] = le.transform(self.dataset['Sex'])
         
         le.fit(self.dataset['Title'])
         self.dataset['Title'] = le.transform(self.dataset['Title'])
