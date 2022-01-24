@@ -31,7 +31,7 @@ The **[Gym](https://gym.openai.com/)** is a toolkit for [**RL**](https://medium.
 - [Robotics](https://gym.openai.com/envs/#robotics): simulated [goal-based tasks](https://blog.openai.com/ingredients-for-robotics-research/) for the Fetch and ShadowHand robots
 - [Toy text](https://gym.openai.com/envs/#toy_text): simple text environments to get you started
 
-Every **environment** contains all the **necessary functionality** to **run an agent** and allow it to **learn**. And don't worry, the implementation of an environment is not RL itself. It won't go beyond the concepts you're not familiar with, but in case you'll be working with the RL system, it will give you useful knowledge for future work.
+Every **environment** contains all the **necessary functionality** to **run an agent** and allow it to **learn**. And don't worry, the implementation of an environment is not RL itself. It won't go beyond the concepts you're not familiar with, but in case you'll be working with the RL system, it will give you useful knowledge for future work. In more advanced DRU courses **Gym** and **RL** will be covered in more details :)
 
 **Important note:**
 >  The main purpose of the Snake Project is not to show you how to create "Snake"-like games, but to teach you how to use OOP and introduce you to working on complex projects.
