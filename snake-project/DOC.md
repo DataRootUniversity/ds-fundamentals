@@ -862,13 +862,14 @@ Snake didnt die eating itself
 ```
 And as always, if explanations are unclear, you can examine validator's test cases by yourself
 
-***Fantastic! We finished with the main elements of the environment! And now below are the rest of the elements with explanatory comments that will use for the full operation of snake game. You can just copy paste them.***
+***Fantastic! We finished with the main elements of the environment! And now below are the rest of the elements with explanatory comments that we will use for the full operation of snake game. You can just copy paste them.***
 
 ### Renderer
 
 The `Renderer` translates the world state with block ids into an RGB image and returns an RGB observation or renders the world using the ***gym*** rendering module. Here we'll use some more complex operations with `numpy`, so you need to read the code carefully to understand on the high level what is going on. You will learn `numpy` in details in the next module. 
 
-`env/utils/renderer.py`:
+Open `env/utils/renderer.py` and paste this code into the file:
+
 ```python
 import numpy as np
 
@@ -958,9 +959,8 @@ class Renderer:
 ```
 ### Environment
 
-Now we will put all the modules into the ***gym*** interface template. Here is a template with a completed constructor and defined methods.
+Now we will put all the modules into the ***gym*** interface template. Here is a template with a completed constructor and defined methods. Open `env/snake_env.py` and paste this code into the file:
 
-`env/snake_env.py`
 ```python
 import gym
 from gym import spaces
@@ -1056,7 +1056,7 @@ Since our gameplay is very simple, we can define one key for each action, here w
 - `⬅` is for left - direction_index is `3`
 
 By the way, you can define any other keys suitable for you.
-Here is the code of the interactor `interactor.py`:
+Here is the code of the interactor `interactor.py`. Just copy this code below into the file:
 
 ```python
 import random, time
