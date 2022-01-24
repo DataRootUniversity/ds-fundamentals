@@ -31,7 +31,7 @@ The **[Gym](https://gym.openai.com/)** is a toolkit for [**RL**](https://medium.
 - [Robotics](https://gym.openai.com/envs/#robotics): simulated [goal-based tasks](https://blog.openai.com/ingredients-for-robotics-research/) for the Fetch and ShadowHand robots
 - [Toy text](https://gym.openai.com/envs/#toy_text): simple text environments to get you started
 
-Every **environment** contains all the **necessary functionality** to **run an agent** and allow it to **learn**. And don't worry, the implementation of an environment is not RL itself. It won't go beyond the concepts you're not familiar with, but in case you'll be working with the RL system, it will give you useful knowledge for future work._
+Every **environment** contains all the **necessary functionality** to **run an agent** and allow it to **learn**. And don't worry, the implementation of an environment is not RL itself. It won't go beyond the concepts you're not familiar with, but in case you'll be working with the RL system, it will give you useful knowledge for future work.
 
 **Important note:**
 >  The main purpose of the Snake Project is not to show you how to create "Snake"-like games, but to teach you how to use OOP and introduce you to working on complex projects.
@@ -862,7 +862,7 @@ Snake didnt die eating itself
 ```
 And as always, if explanations are unclear, you can examine validator's test cases by yourself
 
-Fantastic! We finished with the main elements of the environment, and now we need to implement the renderer of the environment.
+***Fantastic! We finished with the main elements of the environment! And now below are the rest of the elements with explanatory comments that will use for the full operation of snake game. You can just copy paste them.***
 
 ### Renderer
 
@@ -958,7 +958,7 @@ class Renderer:
 ```
 ### Environment
 
-Now we will put all the modules into the ***gym*** interface template. Here is a template with a completed constructor and defined methods. Your task is to implement methods using instructions:
+Now we will put all the modules into the ***gym*** interface template. Here is a template with a completed constructor and defined methods.
 
 `env/snake_env.py`
 ```python
@@ -1018,7 +1018,7 @@ class SnakeEnv(gym.Env):
         @return: np.array (observation after the action), int (reward), bool ('done' flag), np.array (snake)
         """
         # Perform the action
-        reward, done, snake = 
+        reward, done, snake = self.world.move_snake(action)
          
         return self.world.get_observation(), reward, done, snake
 
