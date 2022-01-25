@@ -61,13 +61,10 @@ snake
     ├── settings             - here you can store different constant values, connection parameters, etc.
     │   └── constants.py     - multiple constants storage for their convenient usage.
     │
-    ├── local_validator      - validator for your code are stored here
-    |   ├── validator        - tests core
-    |	|	├── test_constants.py  - some initial and expected constants
-    |	|	└── test_validator.py  - main test functions 
-    |	|
-    |	├── test_snake_step.py - local validator for snake's step method
-    |	└── test_world.py      - local validator for world methods
+    ├── tests      - tests for your code
+    |   ├── validator.py        - main tests utils
+    |	├── test_snake.py 	- tests for snake's step method
+    |	└── test_world.py       - tests for world methods
     |    
     └── interactor.py          - script to allow you playing Snake manually.
 ```
@@ -292,9 +289,9 @@ class Snake:
 **Let's test it right now!**
 
 To avoid misunderstandings and write code correctly in the future, you should play around with your code and test it in different ways. 
-Download [local_validator](https://dru-bot.s3.eu-central-1.amazonaws.com/local_validator.zip) and put it into the root of your project ([Project Structure](#project-structure))
+Download [tests](https://dru-bot.s3.eu-central-1.amazonaws.com/local_validator.zip) and put it into the root of your project ([Project Structure](#project-structure))
 
-Then run `local_validator/test_snake_step.py`
+Run `tests/test_snake.py`
 If your Snake moves correctly and have correct types it will print your Snake movements as a response to commands
 >**Expected output:**
 
@@ -335,7 +332,7 @@ Wrong type of coordinates:
 They all should be tuples
 But you have: <class 'list'>
 ```
-Anyway, if explanations are unclear of just if you are curious, you can figure out how it works examining validator's code. There're no magic :)
+Anyway, if explanations are unclear or if you're just curious, you can figure out how it works looking through validator's code. There's no magic inside :)
 
 >**Note:**
 > If local validator disapproves your code, Bot will do as well!
@@ -795,7 +792,7 @@ class World(object):
 ```
 
 After filling the gaps you should test our methods
-Run `local_validator/test_world.py`
+Run `test/test_world.py`
 If your methods works correctly, it will use them to create a World and Snake, then move it to the food ~~and kill it!~~
 >**Expected output:**
 ```
