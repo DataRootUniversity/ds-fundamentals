@@ -21,7 +21,9 @@ The aim of this project is to show you the basic usage of **Python** and do some
 
 The second module is dedicated to studying **pure Python**, so today we will use a minimum set of additional packages. 
 You probably already know the topic of our project, so it's not a surprise for you - of course, it's a **Snake game**! But today it won't be a classic approach because we will implement a **Gym environment** for this game.
-The **[Gym](https://gym.openai.com/)** is a toolkit for [**RL**](https://medium.com/ai%C2%B3-theory-practice-business/reinforcement-learning-part-1-a-brief-introduction-a53a849771cf) (Reinforcement Learning) which provides a list of **environments** as well as a **common interface** to create custom ones. These environments are used by the reinforcement learning system as something from which they **gather data** and **learn** how to behave optimally. This optimal behavior is learned through interactions with the **environment** and **observations** of how it responds, similar to small children explore the world around them and learn the actions that help them achieve some goal. The toolkit comes with some **pre-built environments** divided into sections: 
+The **[Gym](https://gym.openai.com/)** is a toolkit for [**RL**](https://medium.com/ai%C2%B3-theory-practice-business/reinforcement-learning-part-1-a-brief-introduction-a53a849771cf) (Reinforcement Learning) which provides a list of **environments** as well as a **common interface** to create custom ones. These environments are used by the reinforcement learning system as something from which they **gather data** and **learn** how to behave optimally. This optimal behavior is learned through interactions with the **environment** and **observations** of how it responds. This is pretty similar to how a small child exploring the world around them. 
+
+The toolkit comes with some **pre-built environments** divided into sections: 
 
 - [Algorithms](https://gym.openai.com/envs/#algorithmic): imitate computations
 - [Atari](https://gym.openai.com/envs/#atari): Atari 2600 games
@@ -862,7 +864,7 @@ Snake didnt die eating itself
 ```
 And as always, if explanations are unclear, you can examine validator's test cases by yourself
 
-***Fantastic! We finished with the main elements of the environment! And now below are the rest of the elements with explanatory comments that we will use for the full operation of snake game. You can just copy paste them.***
+***Fantastic! We finished with the main elements of the environment! The rest of the elements with explanatory comments that we will use for the full operation of snake game are below. You can just copy and paste them into your project.***
 
 ### Renderer
 
