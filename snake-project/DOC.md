@@ -21,7 +21,9 @@ The aim of this project is to show you the basic usage of **Python** and do some
 
 The second module is dedicated to studying **pure Python**, so today we will use a minimum set of additional packages. 
 You probably already know the topic of our project, so it's not a surprise for you - of course, it's a **Snake game**! But today it won't be a classic approach because we will implement a **Gym environment** for this game.
-The **[Gym](https://gym.openai.com/)** is a toolkit for [**RL**](https://medium.com/ai%C2%B3-theory-practice-business/reinforcement-learning-part-1-a-brief-introduction-a53a849771cf) (Reinforcement Learning) which provides a list of **environments** as well as a **common interface** to create custom ones. These environments are used by the reinforcement learning system as something from which they **gather data** and **learn** how to behave optimally. The toolkit comes with some **pre-built environments** divided into sections: 
+The **[Gym](https://gym.openai.com/)** is a toolkit for [**RL**](https://medium.com/ai%C2%B3-theory-practice-business/reinforcement-learning-part-1-a-brief-introduction-a53a849771cf) (Reinforcement Learning) which provides a list of **environments** as well as a **common interface** to create custom ones. These environments are used by the reinforcement learning system as something from which they **gather data** and **learn** how to behave optimally. This optimal behavior is learned through interactions with the **environment** and **observations** of how it responds. This is pretty similar to how a small child exploring the world around them. 
+
+The toolkit comes with some **pre-built environments** divided into sections: 
 
 - [Algorithms](https://gym.openai.com/envs/#algorithmic): imitate computations
 - [Atari](https://gym.openai.com/envs/#atari): Atari 2600 games
@@ -31,7 +33,7 @@ The **[Gym](https://gym.openai.com/)** is a toolkit for [**RL**](https://medium.
 - [Robotics](https://gym.openai.com/envs/#robotics): simulated [goal-based tasks](https://blog.openai.com/ingredients-for-robotics-research/) for the Fetch and ShadowHand robots
 - [Toy text](https://gym.openai.com/envs/#toy_text): simple text environments to get you started
 
-Every **environment** contains all the **necessary functionality** to **run an agent** and allow it to **learn**. And don't worry, the implementation of an environment is not RL itself. It won't go beyond the concepts you're not familiar with, but in case you'll be working with the RL system, it will give you useful knowledge for future work.
+Every **environment** contains all the **necessary functionality** to **run an agent** and allow it to **learn**. And don't worry, the implementation of an environment is not RL itself. It won't go beyond the concepts you're not familiar with, but in case you'll be working with the RL system, it will give you useful knowledge for future work. In more advanced DRU courses **Gym** and **RL** will be covered in more details :)
 
 **Important note:**
 >  The main purpose of the Snake Project is not to show you how to create "Snake"-like games, but to teach you how to use OOP and introduce you to working on complex projects.
@@ -59,15 +61,12 @@ snake
     ├── settings             - here you can store different constant values, connection parameters, etc.
     │   └── constants.py     - multiple constants storage for their convenient usage.
     │
-    ├── local_validator      - validator for your code are stored here
-    |   ├── validator        - tests core
-    |	|	├── test_constants.py  - some initial and expected constants
-    |	|	└── test_validator.py  - main test functions 
-    |	|
-    |	├── test_snake_step.py - local validator for snake's step method
-    |	└── test_world.py      - local validator for world methods
+    ├── tests      	     - tests for your code
+    |   ├── validator.py     - main tests utils
+    |	├── test_snake.py    - tests for snake's step method
+    |	└── test_world.py    - tests for world methods
     |    
-    └── interactor.py          - script to allow you playing Snake manually.
+    └── interactor.py        - script to allow you playing Snake manually.
 ```
 
 Now define the same structure in your local file system.
@@ -290,9 +289,9 @@ class Snake:
 **Let's test it right now!**
 
 To avoid misunderstandings and write code correctly in the future, you should play around with your code and test it in different ways. 
-Download [local_validator](https://dru-bot.s3.eu-central-1.amazonaws.com/local_validator.zip) and put it into the root of your project ([Project Structure](#project-structure))
+Download [tests](https://dru.fra1.digitaloceanspaces.com/DS_Fundamentals/self_validation/02_python/snake/local_validator.zip) and put it into the root of your project ([Project Structure](#project-structure))
 
-Then run `local_validator/test_snake_step.py`
+Run `tests/test_snake.py`
 If your Snake moves correctly and have correct types it will print your Snake movements as a response to commands
 >**Expected output:**
 
@@ -333,7 +332,7 @@ Wrong type of coordinates:
 They all should be tuples
 But you have: <class 'list'>
 ```
-Anyway, if explanations are unclear of just if you are curious, you can figure out how it works examining validator's code. There're no magic :)
+Anyway, if explanations are unclear or if you're just curious, you can figure out how it works looking through validator's code. There's no magic inside :)
 
 >**Note:**
 > If local validator disapproves your code, Bot will do as well!
@@ -793,7 +792,7 @@ class World(object):
 ```
 
 After filling the gaps you should test our methods
-Run `local_validator/test_world.py`
+Run `test/test_world.py`
 If your methods works correctly, it will use them to create a World and Snake, then move it to the food ~~and kill it!~~
 >**Expected output:**
 ```
@@ -862,13 +861,14 @@ Snake didnt die eating itself
 ```
 And as always, if explanations are unclear, you can examine validator's test cases by yourself
 
-Fantastic! We finished with the main elements of the environment, and now we need to implement the renderer of the environment.
+***Fantastic! We finished with the main elements of the environment! The rest of the elements with explanatory comments that we will use for the full operation of snake game are below. You can just copy and paste them into your project.***
 
 ### Renderer
 
 The `Renderer` translates the world state with block ids into an RGB image and returns an RGB observation or renders the world using the ***gym*** rendering module. Here we'll use some more complex operations with `numpy`, so you need to read the code carefully to understand on the high level what is going on. You will learn `numpy` in details in the next module. 
 
-`env/utils/renderer.py`:
+Open `env/utils/renderer.py` and paste this code into the file:
+
 ```python
 import numpy as np
 
@@ -958,9 +958,8 @@ class Renderer:
 ```
 ### Environment
 
-Now we will put all the modules into the ***gym*** interface template. Here is a template with a completed constructor and defined methods. Your task is to implement methods using instructions:
+Now we will put all the modules into the ***gym*** interface template. Here is a template with a completed constructor and defined methods. Open `env/snake_env.py` and paste this code into the file:
 
-`env/snake_env.py`
 ```python
 import gym
 from gym import spaces
@@ -1018,7 +1017,7 @@ class SnakeEnv(gym.Env):
         @return: np.array (observation after the action), int (reward), bool ('done' flag), np.array (snake)
         """
         # Perform the action
-        reward, done, snake = 
+        reward, done, snake = self.world.move_snake(action)
          
         return self.world.get_observation(), reward, done, snake
 
@@ -1056,7 +1055,7 @@ Since our gameplay is very simple, we can define one key for each action, here w
 - `⬅` is for left - direction_index is `3`
 
 By the way, you can define any other keys suitable for you.
-Here is the code of the interactor `interactor.py`:
+Here is the code of the interactor `interactor.py`. Just copy this code below into the file:
 
 ```python
 import random, time
