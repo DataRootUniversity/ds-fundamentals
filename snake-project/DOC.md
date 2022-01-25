@@ -61,12 +61,12 @@ snake
     ├── settings             - here you can store different constant values, connection parameters, etc.
     │   └── constants.py     - multiple constants storage for their convenient usage.
     │
-    ├── tests      - tests for your code
-    |   ├── validator.py        - main tests utils
-    |	├── test_snake.py 	- tests for snake's step method
-    |	└── test_world.py       - tests for world methods
+    ├── tests      	     - tests for your code
+    |   ├── validator.py     - main tests utils
+    |	├── test_snake.py    - tests for snake's step method
+    |	└── test_world.py    - tests for world methods
     |    
-    └── interactor.py          - script to allow you playing Snake manually.
+    └── interactor.py        - script to allow you playing Snake manually.
 ```
 
 Now define the same structure in your local file system.
@@ -289,7 +289,7 @@ class Snake:
 **Let's test it right now!**
 
 To avoid misunderstandings and write code correctly in the future, you should play around with your code and test it in different ways. 
-Download [tests](https://dru-bot.s3.eu-central-1.amazonaws.com/local_validator.zip) and put it into the root of your project ([Project Structure](#project-structure))
+Download [tests](https://dru.fra1.digitaloceanspaces.com/DS_Fundamentals/self_validation/02_python/snake/local_validator.zip) and put it into the root of your project ([Project Structure](#project-structure))
 
 Run `tests/test_snake.py`
 If your Snake moves correctly and have correct types it will print your Snake movements as a response to commands
