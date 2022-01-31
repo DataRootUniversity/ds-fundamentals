@@ -1124,27 +1124,24 @@ To submit your project to the bot you need to compress your project to `.zip` wi
 ```
 snake.zip
     ├── env                  
-    │   ├── core           
-    │   │   ├── snake.py    
-    │   │   └── world.py   
+    │   ├── core              
+    │   │   ├── snake.py     
+    │   │   └── world.py     
     │   │
     │   ├── utils            
-    │   │   └── renderer.py  
+    │   │   └── renderer.py   
     │   │
     │   └── snake_env.py     
     │
     ├── settings             
-    │   └── constants.py 
+    │   └── constants.py     
     │
-    ├── local_validator			 		
-    |   ├── validator   	 		
-    |	|	├── test_constants.py	
-    |	|	└── test_validator.py	
-    |	|
-    |	├── test_snake_step.py		
-    |	└── test_world.py
+    ├── tests            
+    |   ├── validator.py     
+    |   ├── test_snake.py    
+    |   └── test_world.py    
     |    
-    └── interactor.py        
+    └── interactor.py                
 ```
 
 
