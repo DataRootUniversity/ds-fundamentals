@@ -539,6 +539,7 @@ Now you need to implement a few operations with appropriate error handlers:
   - id should be integer
   - Such actor id record should exist
 - **`add_actor():`**
+   - Name and date_of_birth are necessary input fields
    - Inputted fields should exist
    - If date of birth is listed among the input fields, it should be in format `DATE_FORMAT` (find it in `settings/constants`)
 - **`update_actor():`**
@@ -546,8 +547,8 @@ Now you need to implement a few operations with appropriate error handlers:
 	- id should be integer
 	- Such actor id record should exist
    - Inputted field should exist
-   - Among inputs fields should be date of birth 
-   - Date of birth should be in format `DATE_FORMAT` (find it in `settings/constants`)
+   - Any input field can be updated separately 
+   - If date of birth is listed among the input fields, it should be in format `DATE_FORMAT` (find it in `settings/constants`)
 - **`delete_actor():`**
   - id should be specified
   - id should be integer
@@ -728,12 +729,14 @@ Now it's time to implement `Movie` operations in the same way:
   - Such movie id record should exist
 - **`add_movie():`**
    - Inputted fields should exist
+   - Name of the movie is a necessary input field
    - Year should be integer
 - **`update_movie():`**
 	- id should be specified
 	- id should be integer
 	- Such movie id record should exist
    - Inputted fields should exist
+   - Any input field can be updated separately
 - **`delete_movie():`**
   - id should be specified
   - id should be integer
@@ -1061,15 +1064,15 @@ And here are examples of **bad request** requests with **`400`** response status
 	**Body:** `{"id": 1}` or `{"relation_id": 1}`
 	**Note:** No "id" specified
 
-13. **Method:** `DELETE` 
+16. **Method:** `DELETE` 
 	**URL:** `http://0.0.0.0:8000/api/actor-relations` or `http://0.0.0.0:8000/api/movie-relations`
 	**Body:** `{"id": 180}` 
 	**Note:** Such "id" doesn't exist
-14. **Method:** `DELETE` 
+17. **Method:** `DELETE` 
 	**URL:** `http://0.0.0.0:8000/api/actor-relations` or `http://0.0.0.0:8000/api/movie-relations`
 	**Body:** `{"id": "one"}`
 	**Note:** "id" should be integer
-15. **Method:** `DELETE`  
+18. **Method:** `DELETE`  
 	**URL:**`http://0.0.0.0:8000/api/actor-relations` or `http://0.0.0.0:8000/api/movie-relations`
 	**Body:** `{}`
 	**Note:** No "id" specified
