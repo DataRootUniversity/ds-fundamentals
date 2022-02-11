@@ -132,6 +132,7 @@ In order to connect your app to your database you need to get it's url.
 When Bot validates your lab, it creates environmental variable `DB_URL`. 
 So, when you will debug your project you should create it the same way.
 Put this command into the terminal in **PyCharm**:
+
 For Windows:
 ```
 set DB_URL=postgresql+psycopg2://test_user:password@localhost:5432/test_db
@@ -927,7 +928,15 @@ if __name__ == "__main__":
 ```
 ## **Test your app**
 
-In order to test the application you need to download tests [link] and put it into the root of your project ([Project Structure](#folder-structure)). We will use the [`pytest`](https://docs.pytest.org/en/7.0.x/) framework for testing the correctness of implemented operations handlers which deal with the requests related to the Actor and Movie entity. But first we should specify that we want to use pytest as our tests runner. An example of how this can be done in **Pycharm**: ` PyCharm --> Preferences --> Tools --> Python Integrated Tools --> Default test runner: choose "pytest". ` Before start testing you need to run `run.py`.
+In order to test the application you need to download tests [link] and put it into the root of your project ([Project Structure](#folder-structure)). We will use the [`pytest`](https://docs.pytest.org/en/7.0.x/) framework for testing the correctness of implemented operations handlers which deal with the requests related to the Actor and Movie entity. But first we should specify that we want to use `pytest` as our tests runner. An example of how this can be done in **Pycharm**: 
+
+For **Windows** and **UNIX**:
+``` File --> Settings --> Tools --> Python Integrated Tools --> Default test runner: choose "pytest". ``` 
+
+For **macOS**:
+``` PyCharm --> Preferences --> Tools --> Python Integrated Tools --> Default test runner: choose "pytest". ``` 
+
+Before start testing you need to run `run.py`. Highly recommend to look through the tests by yourself, and then try to run test functions one by one. 
 
 ## Dockerize your app
 
