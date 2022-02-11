@@ -64,15 +64,19 @@ app
     │   └── parse_request.py    - this file contains a function which parses request data and converts it to a convenient format.
     │   
     │   
-    ├── settings               - here you can store different constant values, connection parameters, etc.
+    ├── settings                - here you can store different constant values, connection parameters, etc.
     │   └── constants.py        -  multiple constants storage for their convenient usage.
     │ 
     │ 
     ├── core                    - folder, which contains core application components.
     │   ├── __init__.py         - initializing our app and DB.
     │   └── routes.py           - application routes (predefined commands).
-    │ 
-    │ 
+    │
+    ├── tests                   - this folder contains test cases for testing the correctness of operation handlers.
+    │   ├── actor_test.py       - test cases of basic handlers for operations related to the Actor entity.
+    │   ├── movie_test.py       - test cases of basic handlers for operations related to the Movie entity.
+    │   └── relationships_test.py - test cases of relationship handlers between Movie and Actor entities.
+    │   
     ├── run.py                  - application run file.
     |
     ├── Dockerfile				- commands used for Dockerization
@@ -546,8 +550,7 @@ Now you need to implement a few operations with appropriate error handlers:
 	- id should be integer
 	- Such actor id record should exist
    - Inputted field should exist
-   - Among inputs fields should be date of birth 
-   - Date of birth should be in format `DATE_FORMAT` (find it in `settings/constants`)
+   - If date of birth is listed among the input fields, it should be in format `DATE_FORMAT` (find it in `settings/constants`)
 - **`delete_actor():`**
   - id should be specified
   - id should be integer
@@ -924,156 +927,7 @@ if __name__ == "__main__":
 ```
 ## **Test your app**
 
-In order to test the application, you need to run `run.py` and **debug** in case of errors.
-Then you can use some `GUI` for sending requests like [Postman](https://www.getpostman.com/downloads/) or `curl` requests in Python.
-
-In case you are using Postman:
-1. Create new Workspace
-2. Put into the URL box `http://0.0.0.0:8000/route-you-want-to-test` 
-3. Choose method (GET, POST, PUT, DELETE etc.)
-4. Choose "Body" and "form-data"
-5. Put into the table keys and values you want to send to your app
-6. Click "Send"
-
->**Example:**
->Method: `POST` 
-	URL: `http://0.0.0.0:8000/api/actor `
-	Body: `{"name": "Megan Fox", "date_of_birth": "01.01.1970", "gender": "female"}`
-<div align="center">
-    <img align="center" src="https://github.com/DataRootUniversity/ds-fundamentals/blob/master/docker-flask-project/figures/add-actor.png?raw=true">
-</div>
-
-Below will be examples of the correct operation of the app. 
-You don't have to test them all manually, but Bot will validate your app in similar way. 
-
-Here are examples of **correct** requests with **`200`** response status code:
-
-1. **Method:** `GET` 
-	**URL:** `http://0.0.0.0:8000/api/actors`
-	**Body:**`{}`	
-	
-2. **Method:** `GET` 
-	**URL:** `http://0.0.0.0:8000/api/movies`
-	**Body:**`{}`	
-3. **Method:** `POST` 
-	**URL:** `http://0.0.0.0:8000/api/actor`
-	**Body:** `{"name": "Megan Fox", "date_of_birth": "01.01.1970", "gender": "female"}`
-4. **Method:** `PUT` 
-	**URL:** `http://0.0.0.0:8000/api/actor`
-	**Body:** `{"id": 1, "name": "Megan Fox Fox"}`
-5. **Method:** `GET` 
-	**URL:** `http://0.0.0.0:8000/api/actor`
-	**Body:** `{"id": 1}`
-6. **Method:** `DELETE` 
-	**URL:** `http://0.0.0.0:8000/api/actor`
-	**Body:** `{"id": 1}`
-7. **Method:** `POST` 
-	**URL:** `http://0.0.0.0:8000/api/movie`
-	**Body:** `{"name": "Fight Club", "year": "1999", "genre": "drama"}`
-8. **Method:** `PUT` 
-	**URL:** `http://0.0.0.0:8000/api/movie`
-	**Body:** `{"id": 1, "name": "Fight Club Club"}`
-9. **Method:** `GET` 
-	**URL:** `http://0.0.0.0:8000/api/movie`
-	**Body:**`{"id": 1}`
-10. **Method:** `DELETE` 
-	**URL:** `http://0.0.0.0:8000/api/movie`
-	**Body:** `{"id": 1}`
-11. **Method:** `PUT` 
-	**URL:** `http://0.0.0.0:8000/api/actor-relations`
-	**Body:** `{"id": 1, "relation_id": "1"}`
-12. **Method:** `DELETE` 
-	**URL:** `http://0.0.0.0:8000/api/actor-relations`
-	**Body:** `{"id": 1}`
-13. **Method:** `PUT` 
-	**URL:** `http://0.0.0.0:8000/api/movie-relations`
-	**Body:** `{"id": 1, "relation_id": "1"}`
-14. **Method:** `DELETE` 
-	**URL:** `http://0.0.0.0:8000/api/movie-relations`
-	**Body:** `{"id": 1}`
-
-
-
-And here are examples of **bad request** requests with **`400`** response status code (Error message doesn't matter):
-
-1. **Method:** `POST` 
-	**URL:** `http://0.0.0.0:8000/api/actor`
-	**Body:** `{"name": "Megan Fox", "date_of_birth": "02.20.1970", "gender": "female"}`
-	**Note:** Wrong date format (20th month specified)
-2. **Method:** `POST` 
-	**URL:** `http://0.0.0.0:8000/api/actor`
-	**Body:** `{"name": "Megan Fox", "date_of_birth": "02.20.1970", "gender": "female", "height": "180"}`
-	**Note:** Wrong input field ("height")
-3.  **Method:** `POST` 
-	**URL:** `http://0.0.0.0:8000/api/movie`
-	**Body:** `{"name": "Fight Club", "year": "1999", "genre": "drama", "length": "120"}`
-	**Note:** Wrong input field ("length")
-	
-4. **Method:** `GET`  or `DELETE`
-	**URL:** `http://0.0.0.0:8000/api/actor` or `http://0.0.0.0:8000/api/movie`
-	**Body:** `{"id": "180"}`
-	**Note:** Such "id" doesn't exist
-5. **Method:** `GET`  or `DELETE`
-	**URL:** `http://0.0.0.0:8000/api/actor` or `http://0.0.0.0:8000/api/movie`
-	**Body:** `{"id": "one"}`
-	**Note:** "id" should be integer
-6.  **Method:** `GET` or `DELETE` 
-	**URL:** `http://0.0.0.0:8000/api/actor` or `http://0.0.0.0:8000/api/movie`
-	**Body:** `{}`
-	**Note:** No "id" specified
-	
-7. **Method:** `PUT` 
-	**URL:** `http://0.0.0.0:8000/api/actor`
-	**Body:** `{"id": "1", "date_of_birth": "02.20.1970"}`
-	**Note:** Wrong date format (20th month specified)
-8. **Method:** `PUT` 
-	**URL:** `http://0.0.0.0:8000/api/actor`
-	**Body:** `{"id": "1", "height": "180"}`
-	**Note:** Wrong input field ("height")
-9.  **Method:** `PUT` 
-	**URL:** `http://0.0.0.0:8000/api/movie`
-	**Body:** `{id": 1, "length": "120"}`
-	**Note:** Wrong input field ("length")
-
-10. **Method:** `PUT` 
-	**URL:** `http://0.0.0.0:8000/api/actor`
-	**Body:** `{"id": 180, "name": "Megan Fox Fox"}`
-	**Note:** Such "id" doesn't exist
-11. **Method:** `PUT` 
-	**URL:** `http://0.0.0.0:8000/api/actor`
-	**Body:** `{"id": "one", "name": "Megan Fox Fox"}` 
-	**Note:** "id" should be integer
-12. **Method:** `PUT` 
-	**URL:** `http://0.0.0.0:8000/api/actor`
-	**Body:** `{"name": "Megan Fox Fox"}`
-	**Note:** No "id" specified
-	
-13. **Method:** `PUT` 
-	**URL:** `http://0.0.0.0:8000/api/actor-relations` or `http://0.0.0.0:8000/api/movie-relations`
-	**Body:** `{"id": 180, "relation_id": 1}` or `{"id": 1, "relation_id": 180}`
-	**Note:** Such "id" doesn't exist
-14. **Method:** `PUT` 
-	**URL:** `http://0.0.0.0:8000/api/actor-relations` or `http://0.0.0.0:8000/api/movie-relations`
-	**Body:** `{"id": "one", "relation_id": 1}` or `{"id": 1, "relation_id": "one"}`
-	**Note:** "id" should be integer
-15. **Method:** `PUT` 
-	**URL:**`http://0.0.0.0:8000/api/actor-relations` or `http://0.0.0.0:8000/api/movie-relations`
-	**Body:** `{"id": 1}` or `{"relation_id": 1}`
-	**Note:** No "id" specified
-
-13. **Method:** `DELETE` 
-	**URL:** `http://0.0.0.0:8000/api/actor-relations` or `http://0.0.0.0:8000/api/movie-relations`
-	**Body:** `{"id": 180}` 
-	**Note:** Such "id" doesn't exist
-14. **Method:** `DELETE` 
-	**URL:** `http://0.0.0.0:8000/api/actor-relations` or `http://0.0.0.0:8000/api/movie-relations`
-	**Body:** `{"id": "one"}`
-	**Note:** "id" should be integer
-15. **Method:** `DELETE`  
-	**URL:**`http://0.0.0.0:8000/api/actor-relations` or `http://0.0.0.0:8000/api/movie-relations`
-	**Body:** `{}`
-	**Note:** No "id" specified
-
+In order to test the application you need to download tests [link] and put it into the root of your project ([Project Structure](#folder-structure)). We will use the [`pytest`](https://docs.pytest.org/en/7.0.x/) framework for testing the correctness of implemented operations handlers which deal with the requests related to the Actor and Movie entity. But first we should specify that we want to use pytest as our tests runner. An example of how this can be done in **Pycharm**: ` PyCharm --> Preferences --> Tools --> Python Integrated Tools --> Default test runner: choose "pytest". ` Before start testing you need to run `run.py`.
 
 ## Dockerize your app
 
