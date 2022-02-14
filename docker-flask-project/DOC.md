@@ -928,7 +928,7 @@ if __name__ == "__main__":
 ```
 ## **Test your app**
 
-In order to test the application you need to download tests [link] and put it into the root of your project ([Project Structure](#folder-structure)). We will use the [`pytest`](https://docs.pytest.org/en/7.0.x/) framework for testing the correctness of implemented operations handlers which deal with the requests related to the Actor and Movie entity. But first we should specify that we want to use `pytest` as our tests runner. An example of how this can be done in **Pycharm**: 
+In order to test the application you need to download [tests](https://dru.fra1.digitaloceanspaces.com/DS_Fundamentals/self_validation/07_restful_api/project/tests.zip) and put it into the root of your project ([Project Structure](#folder-structure)). We will use the [`pytest`](https://docs.pytest.org/en/7.0.x/) framework for testing the correctness of implemented operations handlers which deal with the requests related to the Actor and Movie entity. But first we should specify that we want to use `pytest` as our tests runner. An example of how this can be done in **Pycharm**: 
 
 For **Windows** and **UNIX**:
 ``` File --> Settings --> Tools --> Python Integrated Tools --> Default test runner: choose "pytest". ``` 
