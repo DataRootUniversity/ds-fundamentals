@@ -61,8 +61,12 @@ snake
     ├── settings             - here you can store different constant values, connection parameters, etc.
     │   └── constants.py     - multiple constants storage for their convenient usage.
     │
-    ├── tests      	     - tests for your code
-    |   ├── validator.py     - main tests utils
+    ├── tests      	         - tests for your code
+    |   ├── validators       - main tests utils
+    │   │     │
+    │   │     ├── snake_validator.py    - snake tests utils
+    │   │     └── world_validator.py    - world tests utils
+    │   │
     |	├── test_snake.py    - tests for snake's step method
     |	└── test_world.py    - tests for world methods
     |    
@@ -117,8 +121,10 @@ To make our code **simple** to read we'll hide the **backbone** of main methods 
 **Important Notes:**
 
 1. In order to complete this project, it's better for you to have installed [**PyCharm**](https://www.jetbrains.com/pycharm/download/). To install different packages use [virtualenv](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/).
-2. If you are student of any university, you can apply for [**JetBrains Free Educational Licenses**](https://www.jetbrains.com/community/education/#students) and get **PyCharm Professional** for free (only for the period of study)
-3. (At the time of writing) if you have **Python 3.9**, when installing ***gym*** you may have version compatibility issues. To fix this you should download **Python 3.8** or older version
+2. If you are student of any university, you can apply for [**JetBrains Free Educational Licenses**](https://www.jetbrains.com/community/education/#students) and get **PyCharm Professional** for free (only for the period of study).
+3. (At the time of writing) if you have **Python 3.9**, when installing ***gym*** you may have version compatibility issues. To fix this you should download **Python 3.8** or older version.
+4. For the Snake tutorial you need to install ***gym*** 0.21.0 version: `pip install gym==0.21.0`.
+
 ---
 ### Before we start
 To understand what we want to have in the end watch this little demo:
@@ -1124,24 +1130,28 @@ To submit your project to the bot you need to compress your project to `.zip` wi
 ```
 snake.zip
     ├── env                  
-    │   ├── core              
+    │   ├── core             
     │   │   ├── snake.py     
     │   │   └── world.py     
     │   │
     │   ├── utils            
-    │   │   └── renderer.py   
+    │   │   └── renderer.py  
     │   │
     │   └── snake_env.py     
     │
     ├── settings             
     │   └── constants.py     
     │
-    ├── tests            
-    |   ├── validator.py     
+    ├── tests                
+    |   ├── validators       
+    │   │     │
+    │   │     ├── snake_validator.py 
+    │   │     └── world_validator.py 
+    │   │
     |   ├── test_snake.py    
     |   └── test_world.py    
     |    
-    └── interactor.py                
+    └── interactor.py              
 ```
 
 
